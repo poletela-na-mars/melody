@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 
-import Modal from '@/components/Modal';
+import AuthModal from '@/components/AuthModal';
+import UploadModal from '@/components/UploadModal';
 
 const ModalProvider = () => {
 	const [isMounted, setIsMounted] = useState(false);
@@ -14,10 +15,10 @@ const ModalProvider = () => {
 	if (!isMounted) return null;
 
 	return (
-		<Modal title='Test' description='descr' isOpen onChange={() => {
-		}}>
-			Test
-		</Modal>
+		<>
+			<AuthModal />
+			<UploadModal />
+		</>
 	);
 };
 
