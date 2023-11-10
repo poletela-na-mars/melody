@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Figtree } from 'next/font/google';
 
+import getSongsByUserId from '@/actions/getSongsByUserId';
+
 import SideBar from '@/components/SideBar';
 
 import SupabaseProvider from '@/providers/SupabaseProvider';
@@ -17,7 +19,11 @@ export const metadata: Metadata = {
 	description: 'Find your melody',
 }
 
-export default function RootLayout({ children, }: { children: React.ReactNode }) {
+export const revalidate = 0;
+
+export default async function RootLayout({ children, }: { children: React.ReactNode }) {
+	const userSongs = await getSongsByUserId();
+
 	return (
 		<html lang='en'>
 			<body className={font.className}>
@@ -25,7 +31,7 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
 				<SupabaseProvider>
 					<UserProvider>
 						<ModalProvider />
-						<SideBar>
+						<SideBar songs={userSongs}>
 							{children}
 						</SideBar>
 					</UserProvider>
