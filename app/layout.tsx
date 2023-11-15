@@ -4,6 +4,7 @@ import { Figtree } from 'next/font/google';
 import getSongsByUserId from '@/actions/getSongsByUserId';
 
 import SideBar from '@/components/SideBar';
+import Player from '@/components/Player';
 
 import SupabaseProvider from '@/providers/SupabaseProvider';
 import UserProvider from '@/providers/UserProvider';
@@ -34,6 +35,7 @@ export default async function RootLayout({ children, }: { children: React.ReactN
 						<SideBar songs={userSongs}>
 							{children}
 						</SideBar>
+						<Player />
 					</UserProvider>
 				</SupabaseProvider>
 			</body>
