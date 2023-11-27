@@ -6,11 +6,11 @@ import { twMerge } from 'tailwind-merge';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import toast from 'react-hot-toast';
 
-import useAuthModal from '@/hooks/useAuthModal';
-
 import Button from './Button';
 
 import { useUser } from '@/hooks/useUser';
+import usePlayer from '@/hooks/usePlayer';
+import useAuthModal from '@/hooks/useAuthModal';
 
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx';
 import { HiHome } from 'react-icons/hi';
@@ -23,6 +23,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
+	const player = usePlayer();
 	const authModal = useAuthModal();
 	const router = useRouter();
 
@@ -32,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 	const handleLogout = async () => {
 		const { error } = await supabaseClient.auth.signOut();
 
-		// TODO - Reset playing song
+		player.reset();
 		router.refresh();
 
 		if (error) {
@@ -47,12 +48,10 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 		p-6`, className)}>
 			<div className='w-full mb-4 flex items-center justify-between'>
 				<div className='hidden md:flex gap-x-2 items-center'>
-					<button onClick={() => router.back()}
-						className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'>
+					<button onClick={() => router.back()} className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'>
 						<RxCaretLeft className='text-white' size={35} />
 					</button>
-					<button onClick={() => router.forward()}
-						className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'>
+					<button onClick={() => router.forward()} className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'>
 						<RxCaretRight className='text-white' size={35} />
 					</button>
 				</div>
