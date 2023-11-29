@@ -22,7 +22,7 @@ const UploadModal = () => {
 	const supabaseClient = useSupabaseClient();
 	const router = useRouter();
 
-	const { register, handleSubmit, reset } = useForm({
+	const { register, handleSubmit, reset, formState: { isSubmitting, isValid } } = useForm({
 		defaultValues: {
 			author: '',
 			title: '',
@@ -45,7 +45,7 @@ const UploadModal = () => {
 			const imageFile = values.image?.[0];
 			const songFile = values.song?.[0];
 
-			if (!imageFile || !songFile || !user) {
+			if (!songFile || !user) {
 				toast.error('Empty fields');
 				return;
 			}
@@ -70,21 +70,28 @@ const UploadModal = () => {
 			}
 
 			// Upload song cover
-			const {
-				data: imageData,
-				error: imageError,
-			} = await supabaseClient
-				.storage
-				.from('images')
-				.upload(`image-${values.title}-${uniqueID}`, imageFile, {
-					cacheControl: '3600',
-					upsert: false
-				});
+			const uploadCover = async () => {
+				const {
+					data: imageData,
+					error: imageError,
+				} = await supabaseClient
+					.storage
+					.from('images')
+					.upload(`image-${values.title}-${uniqueID}`, imageFile, {
+						cacheControl: '3600',
+						upsert: false
+					});
 
-			if (imageError) {
-				setIsLoading(false);
-				return toast.error('Failed song cover upload');
-			}
+				if (imageError) {
+					setIsLoading(false);
+					toast.error('Failed song cover upload');
+					return null;
+				}
+
+				return imageData;
+			};
+
+			const imageData: null | { path: string } = imageFile && await uploadCover();
 
 			const { error: supabaseError } = await supabaseClient
 				.from('songs')
@@ -92,7 +99,7 @@ const UploadModal = () => {
 					user_id: user.id,
 					title: values.title,
 					author: values.author,
-					image_path: imageData.path,
+					image_path: imageData ? imageData.path : null,
 					song_path: songData.path,
 				});
 
@@ -131,10 +138,10 @@ const UploadModal = () => {
 					<div className='pb-1'>
 						Select a song cover
 					</div>
-					<Input id='image' type='file' disabled={isLoading} {...register('image', { required: true })}
+					<Input id='image' type='file' disabled={isLoading} {...register('image', { required: false })}
 								 accept='image/*' />
 				</div>
-				<Button disabled={isLoading} type='submit'>
+				<Button disabled={isLoading || isSubmitting || !isValid} type='submit'>
 					Create
 				</Button>
 			</form>

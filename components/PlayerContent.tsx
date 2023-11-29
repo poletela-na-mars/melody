@@ -22,7 +22,7 @@ interface PlayerContentProps {
 
 // TODO - repeat and random songs logic
 // TODO - disable buttons, when loading or next/prev song is absent
-// TODO - song track
+// TODO - song track (ползунок)
 // TODO - save volume for next song
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {

@@ -26,7 +26,6 @@ export async function POST(
 	const body = await request.text()
 	const sig = headers().get('Stripe-Signature');
 
-	// TODO - only secret
 	const webhookSecret =
 		process.env.STRIPE_WEBHOOK_SECRET_LIVE ??
 		process.env.STRIPE_WEBHOOK_SECRET;

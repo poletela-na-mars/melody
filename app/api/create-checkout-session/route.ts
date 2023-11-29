@@ -36,7 +36,6 @@ export async function POST(
 			],
 			mode: 'subscription',
 			allow_promotion_codes: true,
-			// TODO - mistake?
 			subscription_data: {
 				metadata
 			},
