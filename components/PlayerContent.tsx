@@ -23,15 +23,15 @@ interface PlayerContentProps {
 // TODO - repeat and random songs logic
 // TODO - disable buttons, when loading or next/prev song is absent
 // TODO - song track (ползунок)
-// TODO - save volume for next song
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 	const player = usePlayer();
-	const [volume, setVolume] = useState(1);
+
+	const [volumeState, setVolumeState] = useState(player.volume);
 	const [isPlaying, setIsPlaying] = useState(false);
 
 	const Icon = isPlaying ? BsPauseFill : BsPlayFill;
-	const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
+	const VolumeIcon = !volumeState ? HiSpeakerXMark : HiSpeakerWave;
 
 	const onPlayNext = () => {
 		if (!player.ids.length) {
@@ -66,7 +66,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 	const [play, { pause, sound }] = useSound(
 		songUrl,
 		{
-			volume: volume,
+			volume: volumeState,
 			onplay: () => setIsPlaying(true),
 			onend: () => {
 				setIsPlaying(false);
@@ -94,11 +94,16 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 	};
 
 	const toggleMute = () => {
-		if (volume === 0) {
+		if (volumeState === 0) {
 			setVolume(1);
 		} else {
 			setVolume(0);
 		}
+	};
+
+	const setVolume = (value: number) => {
+		setVolumeState(value);
+		player.setVolume(value);
 	};
 
 	return (
@@ -131,7 +136,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 			<div className='hidden md:flex w-full justify-end pr-2'>
 				<div className='flex items-center gap-x-2 w-[120px]'>
 					<VolumeIcon onClick={toggleMute} className='cursor-pointer' size={34} />
-					<Slider value={volume} onChange={(value) => setVolume(value)} />
+					<Slider value={volumeState} onChange={(value) => setVolume(value)} />
 				</div>
 			</div>
 
