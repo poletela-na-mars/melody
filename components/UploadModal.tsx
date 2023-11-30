@@ -7,7 +7,6 @@ import toast from 'react-hot-toast';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/navigation';
 
-
 import { useUser } from '@/hooks/useUser';
 import useUploadModal from '@/hooks/useUploadModal';
 

@@ -10,6 +10,8 @@ import useAuthModal from '@/hooks/useAuthModal';
 
 import Modal from './Modal';
 
+import { theme } from '@/theme';
+
 const AuthModal = () => {
 	const supabaseClient = useSupabaseClient();
 	const router = useRouter();
@@ -36,8 +38,8 @@ const AuthModal = () => {
 					theme: ThemeSupa, variables: {
 						default: {
 							colors: {
-								brand: '#404040',
-								brandAccent: '#22c55e',
+								brand: theme.darkGray,
+								brandAccent: theme.mainBlue,
 							}
 						}
 					}

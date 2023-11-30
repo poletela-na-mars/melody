@@ -10,6 +10,8 @@ import Slider from './Slider';
 import { BsPauseFill, BsPlayFill } from 'react-icons/bs';
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2';
 import { AiFillStepBackward, AiFillStepForward } from 'react-icons/ai';
+import { TbRepeatOff } from 'react-icons/tb';
+import { TbRepeatOnce } from 'react-icons/tb';
 
 import usePlayer from '@/hooks/usePlayer';
 
@@ -20,8 +22,8 @@ interface PlayerContentProps {
 	songUrl: string;
 }
 
-// TODO - repeat and random songs logic
-// TODO - disable buttons, when loading or next/prev song is absent
+// TODO - random songs logic
+// TODO - onPlayPrev/Next in one basic function
 // TODO - song track (ползунок)
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
@@ -29,16 +31,25 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
 	const [volumeState, setVolumeState] = useState(player.volume);
 	const [isPlaying, setIsPlaying] = useState(false);
+	const [repeatState, setRepeatState] = useState(player.repeat);
 
 	const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 	const VolumeIcon = !volumeState ? HiSpeakerXMark : HiSpeakerWave;
+	const RepeatIcon = repeatState? TbRepeatOnce : TbRepeatOff;
 
-	const onPlayNext = () => {
+	const onPlayNext = async (userClick: boolean) => {
 		if (!player.ids.length) {
 			return;
 		}
 
 		const currentIdx = player.ids.findIndex((id) => id === player.activeId);
+
+		if (repeatState && !userClick && player.activeId) {
+			await player.setId('');
+			player.setId(player.ids[currentIdx]);
+			return;
+		}
+
 		const nextSong = player.ids[currentIdx + 1];
 
 		if (!nextSong) {
@@ -48,12 +59,19 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 		player.setId(nextSong);
 	};
 
-	const onPlayPrev = () => {
+	const onPlayPrev = async (userClick: boolean) => {
 		if (!player.ids.length) {
 			return;
 		}
 
 		const currentIdx = player.ids.findIndex((id) => id === player.activeId);
+
+		if (repeatState && !userClick && player.activeId) {
+			await player.setId('');
+			player.setId(player.ids[currentIdx]);
+			return;
+		}
+
 		const prevSong = player.ids[currentIdx - 1];
 
 		if (!prevSong) {
@@ -63,6 +81,20 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 		player.setId(prevSong);
 	};
 
+	const onRepeatSong = () => {
+		if (!player.ids.length || !player.activeId) {
+			return;
+		}
+
+		if (repeatState) {
+			setRepeatState(false);
+			player.repeat = false;
+		} else {
+			setRepeatState(true);
+			player.repeat = true;
+		}
+	};
+
 	const [play, { pause, sound }] = useSound(
 		songUrl,
 		{
@@ -70,7 +102,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 			onplay: () => setIsPlaying(true),
 			onend: () => {
 				setIsPlaying(false);
-				onPlayNext();
+				onPlayNext(false);
 			},
 			onpause: () => setIsPlaying(false),
 			format: ['mp3'],
@@ -123,18 +155,19 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 			</div>
 
 			<div className='hidden h-full md:flex justify-center items-center w-full max-w-[722px] gap-x-6'>
-				<AiFillStepBackward size={30} onClick={onPlayPrev}
+				<AiFillStepBackward size={30} onClick={() => onPlayPrev(true)}
 					className='text-neutral-400 cursor-pointer hover:text-white transition' />
 				<div onClick={handlePlay}
 						 className='flex items-center justify-center h-10 w-10 rounded-full bg-white p-1 cursor-pointer'>
 					<Icon size={30} className='text-black' />
 				</div>
-				<AiFillStepForward size={30} onClick={onPlayNext}
+				<AiFillStepForward size={30} onClick={() => onPlayNext(true)}
 													 className='text-neutral-400 cursor-pointer hover:text-white transition' />
 			</div>
 
 			<div className='hidden md:flex w-full justify-end pr-2'>
 				<div className='flex items-center gap-x-2 w-[120px]'>
+					<RepeatIcon onClick={onRepeatSong} className='cursor-pointer' size={34} />
 					<VolumeIcon onClick={toggleMute} className='cursor-pointer' size={34} />
 					<Slider value={volumeState} onChange={(value) => setVolume(value)} />
 				</div>

@@ -10,6 +10,8 @@ import { useUser } from '@/hooks/useUser';
 
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
+import { theme } from '@/theme';
+
 interface LikeButtonProps {
 	songId: string;
 }
@@ -85,7 +87,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
 
 	return (
 		<button className='hover:opacity-75 transition' onClick={handleLike}>
-			<Icon color={isLiked ? '#22c55e' : 'white'} />
+			<Icon color={isLiked ? theme.mainBlue : 'white'} />
 		</button>
 	);
 };
