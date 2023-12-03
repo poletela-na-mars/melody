@@ -14,6 +14,8 @@ import { TbRepeatOff, TbRepeatOnce } from 'react-icons/tb';
 
 import usePlayer from '@/hooks/usePlayer';
 import { padStartWithZero } from '@/utils/padStartWithZero';
+import { getSongDuration } from '@/utils/getSongDuration';
+import { convertSecToTime } from '@/utils/convertSecToTime';
 
 import { Song } from '@/types';
 
@@ -24,19 +26,6 @@ interface PlayerContentProps {
 
 // TODO - random songs logic
 // TODO - song track performance check
-// TODO - hover time hints
-
-const getSongDuration = (duration: number) => {
-	const sec = duration / 1000;
-	const min = Math.floor(sec / 60);
-	const secRemain = Math.floor(sec % 60);
-	const time = {
-		min: min,
-		sec: secRemain
-	};
-
-	return time;
-};
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 	const player = usePlayer();
@@ -130,12 +119,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 		const interval = setInterval(() => {
 			if (sound) {
 				setSeconds(sound.seek([]));
-				const min = Math.floor(sound.seek([]) / 60);
-				const sec = Math.floor(sound.seek([]) % 60);
-				setCurrTime({
-					min,
-					sec,
-				});
+				const tempCurTime = convertSecToTime(sound.seek([]));
+				setCurrTime(tempCurTime);
 			}
 		}, 1000);
 
@@ -170,7 +155,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 		<>
 			<Slider step={0.01} min={0} max={(duration ?? 0) / 1000} defaultVal={0} className='px-2' value={seconds} onChange={(e) => {
 				sound.seek([e]);
-			}} />
+			}} tooltip={true} />
 			<div className='grid grid-cols-2 md:grid-cols-3 h-full'>
 				<div className='flex w-full justify-start'>
 					<div className='flex items-center gap-x-4'>
@@ -200,9 +185,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
 				<div className='hidden md:flex w-full justify-end pr-2'>
 					<div className='flex items-center gap-x-2 w-[45%]'>
-						<p>{padStartWithZero(currTime.min)}:{padStartWithZero(currTime.sec)}</p>
-						<RepeatIcon onClick={onRepeatSong} className='cursor-pointer' size={34} />
-						<VolumeIcon onClick={toggleMute} className='cursor-pointer' size={34} />
+						<p className='min-w-[46px]'>{padStartWithZero(currTime.min)}:{padStartWithZero(currTime.sec)}</p>
+						<RepeatIcon onClick={onRepeatSong} className='cursor-pointer' size={44} />
+						<VolumeIcon onClick={toggleMute} className='cursor-pointer' size={44} />
 						<Slider step={0.01} min={0} max={1} defaultVal={1} value={volumeState} onChange={(value) => setVolume(value)} />
 					</div>
 				</div>
