@@ -25,13 +25,13 @@ interface PlayerContentProps {
 }
 
 // TODO - random songs logic
-// TODO - song track performance check
+// TODO - cancel image requests for songs, which does not have images
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 	const player = usePlayer();
 
 	const [volumeState, setVolumeState] = useState(player.volume);
-	const [time, setTime] = useState({
+	const [songDuration, setSongDuration] = useState({
 		min: 0,
 		sec: 0,
 	});
@@ -93,6 +93,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 		}
 	};
 
+	const setSongTime = (value: number) => {
+		setSeconds(value);
+		const tempCurTime = convertSecToTime(value);
+		setCurrTime(tempCurTime);
+	};
+
 	const [play, { pause, sound, duration }] = useSound(
 		songUrl,
 		{
@@ -109,8 +115,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
 	useEffect(() => {
 		if (duration) {
-			setTime(getSongDuration(duration));
+			setSongDuration(getSongDuration(duration));
 		}
+
 	}, [duration]);
 
 	useEffect(() => {
@@ -118,9 +125,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
 		const interval = setInterval(() => {
 			if (sound) {
-				setSeconds(sound.seek([]));
-				const tempCurTime = convertSecToTime(sound.seek([]));
-				setCurrTime(tempCurTime);
+				setSongTime(sound.seek([]));
+				console.log('sound triggered - ', sound);
 			}
 		}, 1000);
 
@@ -151,17 +157,20 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 		player.setVolume(value);
 	};
 
+	const onChangeSongTime = (value: number) => {
+		setSongTime(value);
+		sound.seek([value]);
+	};
+
 	return (
 		<>
-			<Slider step={0.01} min={0} max={(duration ?? 0) / 1000} defaultVal={0} className='px-2' value={seconds} onChange={(e) => {
-				sound.seek([e]);
-			}} tooltip={true} />
+			<Slider step={0.01} min={0} max={(duration ?? 0) / 1000} defaultVal={0} className='px-2' value={seconds} onChange={(e) => onChangeSongTime(e)} tooltip={true} />
 			<div className='grid grid-cols-2 md:grid-cols-3 h-full'>
 				<div className='flex w-full justify-start'>
 					<div className='flex items-center gap-x-4'>
 						<MediaItem data={song} />
 						<LikeButton songId={song.id} />
-						<p>{padStartWithZero(time.min)}:{padStartWithZero(time.sec)}</p>
+						<p>{padStartWithZero(songDuration.min)}:{padStartWithZero(songDuration.sec)}</p>
 					</div>
 				</div>
 
