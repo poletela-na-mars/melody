@@ -7,13 +7,16 @@ import useUploadModal from '@/hooks/useUploadModal';
 import { useUser } from '@/hooks/useUser';
 import useOnPlay from '@/hooks/useOnPlay';
 import useSubscribeModal from '@/hooks/useSubscribeModal';
+import usePlayer from '@/hooks/usePlayer';
 
 import MediaItem from './MediaItem';
 
 import { TbPlaylist } from 'react-icons/tb';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { IoShuffleOutline } from 'react-icons/io5';
 
 import { Song } from '@/types';
+import { shuffleArray } from '@/utils/shuffleArray';
 
 interface LibraryProps {
 	songs: Song[];
@@ -25,9 +28,19 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
 	const uploadModal = useUploadModal();
 	const { user, subscription } = useUser();
 
+	const player = usePlayer();
 	const onPlay = useOnPlay(songs);
 
-	const onClick = () => {
+	const onShuffleSongsButtonClick = () => {
+		const shuffledSongs = songs;
+		shuffleArray(shuffledSongs);
+
+		player.reset();
+
+		onPlay(shuffledSongs[0].id);
+	};
+
+	const onAddSongButtonClick = () => {
 		if (!user) {
 			return authModal.onOpen();
 		}
@@ -48,8 +61,12 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
 						Your Library
 					</p>
 				</div>
-				<AiOutlinePlus onClick={onClick} size={20}
-											 className='text-neutral-400 cursor-pointer hover:text-white transition' />
+				<div className='inline-flex items-center gap-x-2'>
+					<IoShuffleOutline onClick={onShuffleSongsButtonClick} size={20}
+						className='text-neutral-400 cursor-pointer hover:text-white transition' />
+					<AiOutlinePlus onClick={onAddSongButtonClick} size={20}
+						className='text-neutral-400 cursor-pointer hover:text-white transition' />
+				</div>
 			</div>
 			<div className='flex flex-col gap-y-2 mt-4 px-3'>
 				{

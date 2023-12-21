@@ -5,11 +5,15 @@ import { useRouter } from 'next/navigation';
 
 import { useUser } from '@/hooks/useUser';
 import useOnPlay from '@/hooks/useOnPlay';
+import usePlayer from '@/hooks/usePlayer';
 
 import MediaItem from '@/components/MediaItem';
 import LikeButton from '@/components/LikeButton';
 
+import { IoShuffleOutline } from 'react-icons/io5';
+
 import { Song } from '@/types';
+import { shuffleArray } from '@/utils/shuffleArray';
 
 interface LikedContentProps {
 	songs: Song[];
@@ -17,6 +21,7 @@ interface LikedContentProps {
 
 const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
 	const onPlay = useOnPlay(songs);
+	const player = usePlayer();
 
 	const router = useRouter();
 	const { isLoading, user } = useUser();
@@ -33,8 +38,19 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
 		</div>
 	}
 
+	const onShuffleSongsButtonClick = () => {
+		const shuffledSongs = songs;
+		shuffleArray(shuffledSongs);
+
+		player.reset();
+
+		onPlay(shuffledSongs[0].id);
+	};
+
 	return (
 		<div className='flex flex-col gap-y-2 w-full p-6'>
+			<IoShuffleOutline size={20} onClick={onShuffleSongsButtonClick}
+				className='self-center md:self-end text-mainBlue cursor-pointer hover:text-white transition' />
 			{
 				songs.map((song) => (
 					<div key={song.id} className='flex items-center gap-x-4 w-full'>

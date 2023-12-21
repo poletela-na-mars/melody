@@ -24,7 +24,6 @@ interface PlayerContentProps {
 	songUrl: string;
 }
 
-// TODO - random songs logic
 // TODO - cancel image requests for songs, which does not have images
 
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
@@ -126,7 +125,6 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 		const interval = setInterval(() => {
 			if (sound) {
 				setSongTime(sound.seek([]));
-				console.log('sound triggered - ', sound);
 			}
 		}, 1000);
 
@@ -193,7 +191,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 				</div>
 
 				<div className='hidden md:flex w-full justify-end pr-2'>
-					<div className='flex items-center gap-x-2 w-[45%]'>
+					{/*w-[45%]*/}
+					<div className='flex items-center gap-x-2'>
 						<p className='min-w-[46px]'>{padStartWithZero(currTime.min)}:{padStartWithZero(currTime.sec)}</p>
 						<RepeatIcon onClick={onRepeatSong} className='cursor-pointer' size={44} />
 						<VolumeIcon onClick={toggleMute} className='cursor-pointer' size={44} />
