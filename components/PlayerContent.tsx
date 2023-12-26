@@ -24,8 +24,6 @@ interface PlayerContentProps {
 	songUrl: string;
 }
 
-// TODO - cancel image requests for songs, which does not have images
-
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 	const player = usePlayer();
 
