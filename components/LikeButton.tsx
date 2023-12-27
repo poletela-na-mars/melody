@@ -64,7 +64,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
 				toast.error(error.message);
 			} else {
 				setIsLiked(false);
-				toast.success('You don\'t like this song anymore');
+				toast.success('Эта песня Вам больше не нравится');
 			}
 		} else {
 			const { error } = await supabaseClient
@@ -78,7 +78,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
 				toast.error(error.message);
 			} else {
 				setIsLiked(true);
-				toast.success('You liked this song');
+				toast.success('Эта песня Вам нравится');
 			}
 		}
 

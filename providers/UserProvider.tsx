@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react'
+import React from 'react';
+
 import { CustomUserContextProvider } from '@/hooks/useUser';
 
 interface UserProviderProps {

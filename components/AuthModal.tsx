@@ -7,10 +7,12 @@ import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 
 import useAuthModal from '@/hooks/useAuthModal';
+import { authIntl } from '@/consts/authIntl';
 
 import Modal from './Modal';
 
 import { theme } from '@/theme';
+import { authProviders } from '@/consts/authProviders';
 
 const AuthModal = () => {
 	const supabaseClient = useSupabaseClient();
@@ -32,8 +34,13 @@ const AuthModal = () => {
 	};
 
 	return (
-		<Modal title='Welcome back' description='Login to your account' isOpen={isOpen} onChange={onChange}>
-			<Auth supabaseClient={supabaseClient} theme='dark' magicLink providers={['github']}
+		<Modal title='С возвращением!' description='Войдите в свой аккаунт' isOpen={isOpen} onChange={onChange}>
+			<Auth supabaseClient={supabaseClient} theme='dark' magicLink providers={authProviders}
+				localization={{
+					variables: {
+						...authIntl
+					},
+				}}
 				appearance={{
 					theme: ThemeSupa, variables: {
 						default: {

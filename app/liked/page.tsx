@@ -8,6 +8,8 @@ import LikedContent from './components/LikedContent';
 
 export const revalidate = 0;
 
+// TODO - check that user can't create a playlist with such a name
+
 const Liked = async () => {
 	const songs = await getLikedSongs();
 
@@ -21,10 +23,10 @@ const Liked = async () => {
 						</div>
 						<div className='flex flex-col gap-y-2 mt-4 md:mt-0'>
 							<p className='hidden md:block font-semibold text-sm'>
-								Playlist
+								Плейлист
 							</p>
 							<h1 className='text-white text-4xl sm:text-5xl lg:text-7xl font-bold'>
-								Liked Songs
+								Любимая музыка
 							</h1>
 						</div>
 					</div>

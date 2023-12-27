@@ -19,7 +19,7 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
 	if (!songs.length) {
 		return (
 			<div className='lfex flex-col gap-y-2 w-full px-6 text-neutral-400'>
-				No songs found
+				Музыка не найдена
 			</div>
 		)
 	}

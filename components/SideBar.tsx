@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import usePlayer from '@/hooks/usePlayer';
 import { usePathname } from 'next/navigation';
 
 import { HiHome } from 'react-icons/hi';
@@ -11,6 +10,8 @@ import { twMerge } from 'tailwind-merge';
 import Box from './Box';
 import SideBarItem from './SideBarItem';
 import Library from './Library';
+
+import usePlayer from '@/hooks/usePlayer';
 
 import { Song } from '@/types';
 
@@ -26,13 +27,13 @@ const SideBar: React.FC<SideBarProps> = ({ children, songs }) => {
 	const routes = useMemo(() => [
 		{
 			icon: HiHome,
-			label: 'Home',
+			label: 'Главное',
 			active: pathname !== '/search',
 			href: '/'
 		},
 		{
 			icon: BiSearch,
-			label: 'Search',
+			label: 'Поиск',
 			active: pathname === '/search',
 			href: '/search'
 		}

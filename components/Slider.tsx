@@ -21,8 +21,6 @@ interface SliderProps {
 
 const Slider: React.FC<SliderProps> = ({ step, min, max, defaultVal, value, onChange, className, tooltip }) => {
 	const handleChange = (newValue: number[]) => {
-		console.log(newValue)
-
 		onChange?.(newValue[0]);
 	}
 

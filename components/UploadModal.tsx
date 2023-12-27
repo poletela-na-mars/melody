@@ -45,7 +45,7 @@ const UploadModal = () => {
 			const songFile = values.song?.[0];
 
 			if (!songFile || !user) {
-				toast.error('Empty fields');
+				toast.error('Есть пустые поля');
 				return;
 			}
 
@@ -65,7 +65,7 @@ const UploadModal = () => {
 
 			if (songError) {
 				setIsLoading(false);
-				return toast.error('Failed song upload');
+				return toast.error('Ошибка загрузки музыки');
 			}
 
 			// Upload song cover
@@ -83,7 +83,7 @@ const UploadModal = () => {
 
 				if (imageError) {
 					setIsLoading(false);
-					toast.error('Failed song cover upload');
+					toast.error('Ошибка загрузки изображения');
 					return null;
 				}
 
@@ -109,39 +109,39 @@ const UploadModal = () => {
 
 			router.refresh();
 			setIsLoading(false);
-			toast.success('Song uploaded');
+			toast.success('Музыка загружена');
 			reset();
 			uploadModal.onClose();
 
 		} catch (err) {
-			toast.error('Something went wrong');
+			toast.error('Что-то пошло не так!');
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	return (
-		<Modal title='Add a song' description='Upload .mp3 file' isOpen={uploadModal.isOpen} onChange={onChange}>
+		<Modal title='Добавьте трек' description='Загрузите .mp3 файл' isOpen={uploadModal.isOpen} onChange={onChange}>
 			<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-y-4'>
 				<Input id='title' disabled={isLoading} {...register('title', { required: true })}
-							 placeholder='Song title' />
+							 placeholder='Название трека' />
 				<Input id='author' disabled={isLoading} {...register('author', { required: true })}
-							 placeholder='Song author' />
+							 placeholder='Автор трека' />
 				<div>
 					<div className='pb-1'>
-						Select a song file
+						Выберите .mp3 файл
 					</div>
 					<Input id='song' type='file' disabled={isLoading} {...register('song', { required: true })} accept='.mp3' />
 				</div>
 				<div>
 					<div className='pb-1'>
-						Select a song cover
+						Выберите обложку трека
 					</div>
 					<Input id='image' type='file' disabled={isLoading} {...register('image', { required: false })}
 								 accept='image/*' />
 				</div>
 				<Button disabled={isLoading || isSubmitting || !isValid} type='submit'>
-					Create
+					Загрузить
 				</Button>
 			</form>
 		</Modal>

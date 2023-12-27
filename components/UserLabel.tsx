@@ -17,7 +17,7 @@ const UserLabel = () => {
 
 	return (
 		<h1 className='text-white text-3xl font-semibold'>
-			Hello, {name}
+			Привет, {name}
 		</h1>
 	);
 };

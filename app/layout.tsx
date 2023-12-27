@@ -14,11 +14,11 @@ import ToasterProvider from '@/providers/ToasterProvider';
 
 import './globals.css';
 
-const font = Figtree({ subsets: ['latin'] })
+const font = Figtree({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
 	title: 'Melody',
-	description: 'Find your melody',
+	description: 'Найди свою мелодию',
 }
 
 export const revalidate = 0;
