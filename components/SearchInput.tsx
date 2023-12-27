@@ -27,7 +27,7 @@ const SearchInput = () => {
 	}, [debouncedValue, router]);
 
 	return (
-		<Input placeholder='Search for songs...' value={value} onChange={(e) => setValue(e.target.value)} />
+		<Input placeholder='Введите название песни...' value={value} onChange={(e) => setValue(e.target.value)} />
 	);
 };
 

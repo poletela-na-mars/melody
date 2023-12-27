@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 		if (error) {
 			toast.error(error.message);
 		} else {
-			toast.success('Logged out');
+			toast.success('Вы вышли из аккаунта');
 		}
 	};
 
@@ -83,15 +83,15 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 							<div>
 								<Button
 									onClick={authModal.onOpen}
-									className='bg-transparent border-solid border-neutral-300 text-neutral-300 px-6 py-2 font-medium'>
-									Sign up
+									className='bg-transparent border-solid border-white text-white px-6 py-2 font-medium'>
+									Зарегистрироваться
 								</Button>
 							</div>
 							<div>
 								<Button
 									onClick={authModal.onOpen}
 									className='bg-white px-6 py-2'>
-									Log in
+									Войти
 								</Button>
 							</div>
 						</>

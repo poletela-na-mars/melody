@@ -17,14 +17,14 @@ export default async function Home() {
 					<UserLabel />
 
 					<div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 mt-4'>
-						<ListItem image='/images/liked.png' name='Liked Songs' href='liked' />
+						<ListItem image='/images/liked.png' name='Любимая музыка' href='liked' />
 					</div>
 				</div>
 			</Header>
 			<div className='mt-2 mb-7 px-6'>
 				<div className='flex justify-between items-center'>
 					<h1 className='text-white text-2xl font-semibold'>
-						Newest Songs
+						Новинки
 					</h1>
 				</div>
 				<div>
@@ -32,5 +32,5 @@ export default async function Home() {
 				</div>
 			</div>
 		</div>
-	)
+	);
 }

@@ -34,7 +34,7 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
 
 	if (!songs.length) {
 		return <div className='flex flex-col gap-y-2 w-full px-6 text-neutral-400'>
-			No liked songs
+			Нет любимой музыки.
 		</div>
 	}
 
