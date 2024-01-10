@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSessionContext } from '@supabase/auth-helpers-react';
 import toast from 'react-hot-toast';
+import { Tooltip } from 'react-tooltip';
 
 import useAuthModal from '@/hooks/useAuthModal';
 import { useUser } from '@/hooks/useUser';
@@ -86,7 +87,10 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
 
 	return (
 		<button className='hover:opacity-75 transition' onClick={handleLike}>
-			<Icon color={isLiked ? theme.mainBlue : 'white'} />
+			<Icon color={isLiked ? theme.mainBlue : 'white'} className='like-button' />
+			<Tooltip anchorSelect='.like-button' place='bottom'>
+				Добавить в «Любимую музыку»
+			</Tooltip>
 		</button>
 	);
 };

@@ -16,6 +16,7 @@ import { IoShuffleOutline } from 'react-icons/io5';
 
 import { Song } from '@/types';
 import { shuffleArray } from '@/utils/shuffleArray';
+import { Tooltip } from 'react-tooltip';
 
 interface LibraryProps {
 	songs: Song[];
@@ -57,9 +58,15 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
 				</div>
 				<div className='inline-flex items-center gap-x-2'>
 					<IoShuffleOutline onClick={onShuffleSongsButtonClick} size={20}
-						className='text-neutral-400 cursor-pointer hover:text-white transition' />
+						className='shuffle text-neutral-400 cursor-pointer hover:text-white transition' />
+					<Tooltip anchorSelect='.shuffle' place='bottom'>
+						Перемешать музыку
+					</Tooltip>
 					<AiOutlinePlus onClick={onAddSongButtonClick} size={20}
-						className='text-neutral-400 cursor-pointer hover:text-white transition' />
+						className='add-music text-neutral-400 cursor-pointer hover:text-white transition' />
+					<Tooltip anchorSelect='.add-music' place='bottom'>
+						Добавить музыку
+					</Tooltip>
 				</div>
 			</div>
 			<div className='flex flex-col gap-y-2 mt-4 px-3'>

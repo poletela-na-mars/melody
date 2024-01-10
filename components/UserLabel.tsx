@@ -13,7 +13,7 @@ const getUserNameFromEmail = (email: string | undefined) => {
 
 const UserLabel = () => {
 	const { user } = useUser();
-	const name = getUserNameFromEmail(user?.email) || 'Anonymous';
+	const name = getUserNameFromEmail(user?.email) || 'Аноним';
 
 	return (
 		<h1 className='text-white text-3xl font-semibold'>

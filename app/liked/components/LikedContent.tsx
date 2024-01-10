@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Tooltip } from 'react-tooltip';
 
 import { useUser } from '@/hooks/useUser';
 import useOnPlay from '@/hooks/useOnPlay';
@@ -50,7 +51,10 @@ const LikedContent: React.FC<LikedContentProps> = ({ songs }) => {
 	return (
 		<div className='flex flex-col gap-y-2 w-full p-6'>
 			<IoShuffleOutline size={20} onClick={onShuffleSongsButtonClick}
-				className='self-center md:self-end text-mainBlue cursor-pointer hover:text-white transition' />
+				className='shuffle self-center md:self-end text-mainBlue cursor-pointer hover:text-white transition' />
+			<Tooltip anchorSelect='.shuffle' place='bottom'>
+				Перемешать музыку
+			</Tooltip>
 			{
 				songs.map((song) => (
 					<div key={song.id} className='flex items-center gap-x-4 w-full'>

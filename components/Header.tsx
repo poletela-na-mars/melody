@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import toast from 'react-hot-toast';
+import { Tooltip } from 'react-tooltip';
 
 import Button from './Button';
 
@@ -32,6 +33,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 	const { user } = useUser();
 
 	const handleLogout = async () => {
+		// TODO - popup before logging out
 		const { error } = await supabaseClient.auth.signOut();
 
 		player.reset();
@@ -51,11 +53,17 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 				<div className='hidden md:flex gap-x-2 items-center'>
 					<button onClick={() => router.back()} 
 						className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'>
-						<RxCaretLeft className='text-white' size={35} />
+						<RxCaretLeft className='caret-left text-white' size={35} />
+						<Tooltip anchorSelect='.caret-left' place='bottom'>
+							Нажмите, чтобы вернуться
+						</Tooltip>
 					</button>
 					<button onClick={() => router.forward()} 
 						className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'>
-						<RxCaretRight className='text-white' size={35} />
+						<RxCaretRight className='caret-right text-white' size={35} />
+						<Tooltip anchorSelect='.caret-right' place='bottom'>
+							Нажмите, чтобы перейти вперед
+						</Tooltip>
 					</button>
 				</div>
 
@@ -72,10 +80,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 					{user
 						? <div className='flex gap-x-4 items-center'>
 							<Button onClick={handleLogout} className='bg-white p-2'>
-								<FiLogOut size={24} />
+								<FiLogOut size={24} className='log-out' />
+								<Tooltip anchorSelect='.log-out' place='bottom'>
+									Выйти из аккаунта
+								</Tooltip>
 							</Button>
 							<Button onClick={() => router.push('/account')} className='bg-white'>
-								<FaUserAlt />
+								<FaUserAlt className='profile' />
+								<Tooltip anchorSelect='.profile' place='bottom'>
+									Аккаунт
+								</Tooltip>
 							</Button>
 						</div>
 						:
