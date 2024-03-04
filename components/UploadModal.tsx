@@ -24,7 +24,10 @@ const UploadModal = () => {
 	const { register, handleSubmit, reset, formState: { isSubmitting, isValid } } = useForm({
 		defaultValues: {
 			author: '',
+			performer: '',
 			title: '',
+			genre: '',
+			mood: '',
 			song: null,
 			image: null,
 		}
@@ -98,8 +101,11 @@ const UploadModal = () => {
 					user_id: user.id,
 					title: values.title,
 					author: values.author,
+					performer: values.performer,
 					image_path: imageData ? imageData.path : null,
 					song_path: songData.path,
+					genre: values.genre,
+					mood: values.mood,
 				});
 
 			if (supabaseError) {
@@ -127,6 +133,12 @@ const UploadModal = () => {
 							 placeholder='Название трека' />
 				<Input id='author' disabled={isLoading} {...register('author', { required: true })}
 							 placeholder='Автор трека' />
+				<Input id='performer' disabled={isLoading} {...register('performer', { required: true })}
+							 placeholder='Исполнитель трека' />
+				<Input id='genre' disabled={isLoading} {...register('genre', { required: true })}
+							 placeholder='Жанр' />
+				<Input id='mood' disabled={isLoading} {...register('mood', { required: true })}
+							 placeholder='Настроение' />
 				<div>
 					<div className='pb-1'>
 						Выберите .mp3 файл

@@ -4,9 +4,13 @@ export interface Song {
 	id: string;
 	user_id: string;
 	author: string;
+	performer: string;
 	title: string;
+	genre: string;
+	mood: string;
 	song_path: string;
 	image_path: string;
+	listen_counter: number;
 }
 
 export interface UserDetails {
