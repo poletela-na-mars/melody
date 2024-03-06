@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useSound from 'use-sound';
+import toast from 'react-hot-toast';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 import MediaItem from './MediaItem';
 import LikeButton from './LikeButton';
@@ -24,7 +26,10 @@ interface PlayerContentProps {
 	songUrl: string;
 }
 
+const TIME_TO_LOG_LISTEN_COUNTER = 2;
+
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
+	const supabaseClient = useSupabaseClient();
 	const player = usePlayer();
 
 	const [volumeState, setVolumeState] = useState(player.volume);
@@ -39,6 +44,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 	const [seconds, setSeconds] = useState<number>(0);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [repeatState, setRepeatState] = useState(player.repeat);
+
+	const isCounterSubmitted = useRef(false);
 
 	const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 	const VolumeIcon = !volumeState ? HiSpeakerXMark : HiSpeakerWave;
@@ -96,6 +103,26 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 		setCurrTime(tempCurTime);
 	};
 
+	const submitCounter = async () => {
+		try {
+			const { error: supabaseError } = await supabaseClient
+				.from('songs')
+				.update({
+					listen_counter: song.listen_counter + 1
+				})
+				.eq('id', song.id);
+
+			if (supabaseError) {
+				return toast.error(supabaseError.message);
+			}
+
+			isCounterSubmitted.current = true;
+
+		} catch (err) {
+			toast.error('Что-то пошло не так!');
+		}
+	};
+
 	const [play, { pause, sound, duration }] = useSound(
 		songUrl,
 		{
@@ -122,7 +149,12 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
 		const interval = setInterval(() => {
 			if (sound) {
-				setSongTime(sound.seek([]));
+				const msPassed = sound.seek([]);
+				setSongTime(msPassed);
+
+				if (msPassed >= ((duration ?? 0) / (TIME_TO_LOG_LISTEN_COUNTER * 1000)) && !isCounterSubmitted.current) {
+					submitCounter();
+				}
 			}
 		}, 1000);
 
@@ -160,7 +192,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 
 	return (
 		<>
-			<Slider step={0.01} min={0} max={(duration ?? 0) / 1000} defaultVal={0} className='px-2' value={seconds} onChange={(e) => onChangeSongTime(e)} tooltip={true} />
+			<Slider step={0.01} min={0} max={(duration ?? 0) / 1000} defaultVal={0} className='px-2' value={seconds}
+				onChange={(e) => onChangeSongTime(e)} tooltip={true} />
 			<div className='grid grid-cols-2 md:grid-cols-3 h-full'>
 				<div className='flex w-full justify-start'>
 					<div className='flex items-center gap-x-4'>
@@ -194,7 +227,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 						<p className='min-w-[46px]'>{padStartWithZero(currTime.min)}:{padStartWithZero(currTime.sec)}</p>
 						<RepeatIcon onClick={onRepeatSong} className='cursor-pointer' size={44} />
 						<VolumeIcon onClick={toggleMute} className='cursor-pointer' size={44} />
-						<Slider step={0.01} min={0} max={1} defaultVal={1} value={volumeState} onChange={(value) => setVolume(value)} />
+						<Slider step={0.01} min={0} max={1} defaultVal={1} value={volumeState}
+							onChange={(value) => setVolume(value)} />
 					</div>
 				</div>
 
