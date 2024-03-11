@@ -20,9 +20,11 @@ import { Song } from '@/types';
 interface ControlsProps {
 	songs: Song[];
 	className?: string;
+	iconSize: number;
+	children?: React.ReactNode;
 }
 
-const Controls: React.FC<ControlsProps> = ({ songs, className }) => {
+const Controls: React.FC<ControlsProps> = ({ songs, className, iconSize, children }) => {
 	const authModal = useAuthModal();
 	const uploadModal = useUploadModal();
 	const { user } = useUser();
@@ -49,12 +51,13 @@ const Controls: React.FC<ControlsProps> = ({ songs, className }) => {
 
 	return (
 		<div className={twMerge('inline-flex items-center gap-x-2', className)}>
-			<IoShuffleOutline onClick={onShuffleSongsButtonClick} size={20}
+			{children}
+			<IoShuffleOutline onClick={onShuffleSongsButtonClick} size={iconSize}
 				className='shuffle text-neutral-400 cursor-pointer hover:text-white transition' />
 			<Tooltip anchorSelect='.shuffle' place='bottom'>
 				Перемешать музыку
 			</Tooltip>
-			<AiOutlinePlus onClick={onAddSongButtonClick} size={20}
+			<AiOutlinePlus onClick={onAddSongButtonClick} size={iconSize}
 				className='add-music text-neutral-400 cursor-pointer hover:text-white transition' />
 			<Tooltip anchorSelect='.add-music' place='bottom'>
 				Добавить музыку

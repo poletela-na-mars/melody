@@ -8,6 +8,8 @@ import PageContent from './components/PageContent';
 import UserLabel from '@/components/UserLabel';
 import Controls from '@/components/Controls';
 
+import { TbPlaylist } from 'react-icons/tb';
+
 export const revalidate = 0;
 
 export default async function Home() {
@@ -22,7 +24,9 @@ export default async function Home() {
 					<div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 mt-4'>
 						<ListItem image='/images/liked.png' name='Любимая музыка' href='liked' />
 					</div>
-					<Controls className='md:hidden flex justify-center gap-x-8 mt-4' songs={songs} />
+					<Controls className='md:hidden flex justify-center gap-x-8 mt-4' songs={songs} iconSize={26}>
+						<TbPlaylist className='text-neutral-400 hover:text-white transition' size={26} />
+					</Controls>
 				</div>
 			</Header>
 			<div className='mt-2 mb-7 px-6'>
