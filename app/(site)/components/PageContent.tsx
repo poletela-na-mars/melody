@@ -5,6 +5,7 @@ import React from 'react';
 import SongItem from '@/components/SongItem';
 
 import useOnPlay from '@/hooks/useOnPlay';
+import { useUser } from '@/hooks/useUser';
 
 import { Song } from '@/types';
 
@@ -14,8 +15,9 @@ interface PageContentProps {
 
 const PageContent: React.FC<PageContentProps> = ({ songs }) => {
 	const onPlay =  useOnPlay(songs);
+	const { user } = useUser();
 
-	if (!songs.length) {
+	if (!songs.length || !user) {
 		return (
 			<div className='mt-4 text-neutral-400'>
 				Музыка не найдена

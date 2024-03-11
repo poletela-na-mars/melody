@@ -3,9 +3,11 @@
 import React from 'react';
 import { Tooltip } from 'react-tooltip';
 import { twMerge } from 'tailwind-merge';
+import { useRouter } from 'next/navigation';
 
 import { IoShuffleOutline } from 'react-icons/io5';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { TbPlaylist } from 'react-icons/tb';
 
 import useAuthModal from '@/hooks/useAuthModal';
 import useUploadModal from '@/hooks/useUploadModal';
@@ -21,18 +23,23 @@ interface ControlsProps {
 	songs: Song[];
 	className?: string;
 	iconSize: number;
-	children?: React.ReactNode;
+	mobVersion: boolean;
 }
 
-const Controls: React.FC<ControlsProps> = ({ songs, className, iconSize, children }) => {
+const Controls: React.FC<ControlsProps> = ({ songs, className, iconSize, mobVersion }) => {
 	const authModal = useAuthModal();
 	const uploadModal = useUploadModal();
 	const { user } = useUser();
+	const router = useRouter();
 
 	const player = usePlayer();
 	const onPlay = useOnPlay(songs);
 
 	const onShuffleSongsButtonClick = () => {
+		if (!user) {
+			return authModal.onOpen();
+		}
+
 		const shuffledSongs = songs;
 		shuffleArray(shuffledSongs);
 
@@ -51,7 +58,10 @@ const Controls: React.FC<ControlsProps> = ({ songs, className, iconSize, childre
 
 	return (
 		<div className={twMerge('inline-flex items-center gap-x-2', className)}>
-			{children}
+			{
+				mobVersion &&
+					<TbPlaylist className='text-neutral-400 hover:text-white transition' size={26} onClick={() => router.push('/library')} />
+			}
 			<IoShuffleOutline onClick={onShuffleSongsButtonClick} size={iconSize}
 				className='shuffle text-neutral-400 cursor-pointer hover:text-white transition' />
 			<Tooltip anchorSelect='.shuffle' place='bottom'>

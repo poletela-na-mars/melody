@@ -50,6 +50,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
 
 	const handleLike = async () => {
 		if (!user) {
+			router.replace('/');
 			return authModal.onOpen();
 		}
 

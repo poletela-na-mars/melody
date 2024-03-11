@@ -1,11 +1,15 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 import useOnPlay from '@/hooks/useOnPlay';
 
 import MediaItem from '@/components/MediaItem';
 import LikeButton from '@/components/LikeButton';
+
+import useAuthModal from '@/hooks/useAuthModal';
+import { useUser } from '@/hooks/useUser';
 
 import { Song } from '@/types';
 
@@ -15,6 +19,17 @@ interface SearchContentProps {
 
 const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
 	const onPlay = useOnPlay(songs);
+
+	const authModal = useAuthModal();
+	const { user } = useUser();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!user) {
+			router.replace('/');
+			return authModal.onOpen();
+		}
+	}, []);
 
 	if (!songs.length) {
 		return (
