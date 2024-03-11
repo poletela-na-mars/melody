@@ -6,6 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import toast from 'react-hot-toast';
 import { Tooltip } from 'react-tooltip';
+import Link from 'next/link';
 
 import Button from './Button';
 
@@ -67,16 +68,20 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 					</button>
 				</div>
 
-				<div className='flex md:hidden gap-x-2 items-center'>
+				<div className='flex md:hidden gap-x-4 items-center'>
 					<button className='rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition'>
-						<HiHome className='text-black' size={20} />
+						<Link href='/'>
+							<HiHome className='text-black' size={24} />
+						</Link>
 					</button>
 					<button className='rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition'>
-						<BiSearch className='text-black' size={20} />
+						<Link href='/search'>
+							<BiSearch className='text-black' size={24} />
+						</Link>
 					</button>
 				</div>
 
-				<div className='flex justify-between items-center gap-x-4'>
+				<div className='flex items-center gap-x-4 flex-wrap justify-end gap-y-2'>
 					{user
 						? <div className='flex gap-x-4 items-center'>
 							<Button onClick={handleLogout} className='bg-white p-2'>
