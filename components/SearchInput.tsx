@@ -8,7 +8,11 @@ import Input from './Input';
 
 import useDebounce from '@/hooks/useDebounce';
 
-const SearchInput = () => {
+interface SearchInputProps {
+	placeholder: string;
+}
+
+const SearchInput = ({ placeholder }: SearchInputProps) => {
 	const router = useRouter();
 	const [value, setValue] = useState<string>('');
 	const debouncedValue = useDebounce<string>(value, 500);
@@ -19,7 +23,7 @@ const SearchInput = () => {
 		};
 
 		const url = qs.stringifyUrl({
-			url: '/search',
+			url: `${window.location.pathname}`,
 			query: query,
 		});
 
@@ -27,7 +31,7 @@ const SearchInput = () => {
 	}, [debouncedValue, router]);
 
 	return (
-		<Input placeholder='Введите название песни...' value={value} onChange={(e) => setValue(e.target.value)} />
+		<Input placeholder={placeholder} value={value} onChange={(e) => setValue(e.target.value)} />
 	);
 };
 

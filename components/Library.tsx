@@ -26,11 +26,11 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
 					<TbPlaylist className='text-neutral-400' size={26} />
 					<Link href='/library'>
 						<p className='text-neutral-400 font-medium text-md hover:text-white transition'>
-							Ваша библиотека
+							Ваша Библиотека
 						</p>
 					</Link>
 				</div>
-				<Controls className='' songs={songs} iconSize={20} />
+				<Controls className='' songs={songs} iconSize={20} mobVersion={false} />
 			</div>
 			<div className='flex flex-col gap-y-2 mt-4 px-3'>
 				{

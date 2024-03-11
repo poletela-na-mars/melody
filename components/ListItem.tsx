@@ -1,20 +1,25 @@
 'use client';
 
 import React from 'react'
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface ListItemProps {
 	image: string;
 	name: string;
-	href: string;
+	href?: string;
+	onClickAction?: () => void;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ image, name, href }) => {
+const ListItem: React.FC<ListItemProps> = ({ image, name, href, onClickAction }) => {
 	const router = useRouter();
 
 	const onClick = () => {
-		router.push(href);
+		if (href) {
+			router.push(href);
+		} else if (onClickAction) {
+			onClickAction();
+		}
 	};
 
 	return (
