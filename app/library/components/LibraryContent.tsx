@@ -32,14 +32,6 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
 		}
 	}, []);
 
-	if (!songs.length) {
-		return (
-			<div className='lfex flex-col gap-y-2 w-full px-6 text-neutral-400'>
-				Музыка не найдена
-			</div>
-		)
-	}
-
 	return (
 		<div className='w-full px-6'>
 			<div className='flex items-center gap-x-4 overflow-y-auto'>
@@ -52,28 +44,32 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
 				}} />
 			</div>
 			{
-				songs &&
 				<>
-					<h2 className='text-white text-2xl font-semibold pb-0 pt-5'>
+					<h2 className='text-white text-2xl font-semibold pb-0 pt-6'>
 						Альбомы
 					</h2>
 					<div className={`
-						grid
-						grid-cols-2
-						sm:grid-cols-3
-						md:grid-cols-3
-						lg:grid-cols-4
-						xl:grid-cols-5
-						2xl:grid-cols-8
-						gap-4
-						mt-4
-					`}>
+							grid
+							grid-cols-2
+							sm:grid-cols-3
+							md:grid-cols-3
+							lg:grid-cols-4
+							xl:grid-cols-5
+							2xl:grid-cols-8
+							gap-4
+							mt-6
+						`}>
 						{
-							// TODO - albums instead of songs
-							songs.map((song) =>
-								// TODO - Album Page
-								<AlbumItem key={song.id} onClick={(id: string) => onPlay(id)} data={song} />
-							)
+							!songs.length
+								?
+								// TODO - albums instead of songs
+								songs.map((song) =>
+									// TODO - Album Page
+									<AlbumItem key={song.id} onClick={(id: string) => onPlay(id)} data={song} />
+								)
+								: <h2 className='text-neutral-400 pb-6 col-span-full'>
+									Альбомы не найдены
+								</h2>
 						}
 					</div>
 				</>
@@ -83,14 +79,18 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
 			</h2>
 			<div className='flex flex-col gap-y-2 pt-6'>
 				{
-					songs.map((song) => (
-						<div key={song.id} className='flex items-center gap-x-4'>
-							<div className='flex-1'>
-								<MediaItem data={song} onClick={(id: string) => onPlay(id)} />
+					!songs.length
+						? songs.map((song) => (
+							<div key={song.id} className='flex items-center gap-x-4'>
+								<div className='flex-1'>
+									<MediaItem data={song} onClick={(id: string) => onPlay(id)} />
+								</div>
+								<LikeButton songId={song.id} />
 							</div>
-							<LikeButton songId={song.id} />
-						</div>
-					))
+						))
+						: <h2 className='text-neutral-400 pb-6'>
+							Музыка не найдена
+						</h2>
 				}
 			</div>
 		</div>
