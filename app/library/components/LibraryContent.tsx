@@ -9,6 +9,7 @@ import ListItem from '@/components/ListItem';
 import AlbumItem from '@/components/AlbumItem';
 
 import useAuthModal from '@/hooks/useAuthModal';
+import useAddAlbumModal from '@/hooks/useAddAlbumModal';
 import { useUser } from '@/hooks/useUser';
 import useOnPlay from '@/hooks/useOnPlay';
 
@@ -20,10 +21,19 @@ interface LibraryContentProps {
 
 const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
 	const authModal = useAuthModal();
+	const addAlbumModal = useAddAlbumModal();
 	const { user } = useUser();
 	const router = useRouter();
 
 	const onPlay = useOnPlay(songs);
+
+	const onAddAlbumButtonClick = () => {
+		if (!user) {
+			return authModal.onOpen();
+		}
+
+		return addAlbumModal.onOpen();
+	};
 
 	useEffect(() => {
 		if (!user) {
@@ -35,9 +45,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
 	return (
 		<div className='w-full px-6'>
 			<div className='flex items-center gap-x-4 overflow-y-auto'>
-				{/*TODO - Add opening popup for Adding Album*/}
-				<ListItem image='/images/new-album.png' name='Создать Альбом' onClickAction={() => {
-				}} />
+				<ListItem image='/images/new-album.png' name='Создать Альбом' onClickAction={onAddAlbumButtonClick} />
 				<ListItem image='/images/liked.png' name='Любимая музыка' href='liked' />
 				{/*TODO - Play Recommended music*/}
 				<ListItem image='/images/recommended-music.png' name='Рекомендованная музыка' onClickAction={() => {
@@ -60,7 +68,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
 							mt-6
 						`}>
 						{
-							!songs.length
+							songs.length
 								?
 								// TODO - albums instead of songs
 								songs.map((song) =>
@@ -79,7 +87,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
 			</h2>
 			<div className='flex flex-col gap-y-2 pt-6'>
 				{
-					!songs.length
+					songs.length
 						? songs.map((song) => (
 							<div key={song.id} className='flex items-center gap-x-4'>
 								<div className='flex-1'>
