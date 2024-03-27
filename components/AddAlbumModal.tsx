@@ -116,7 +116,7 @@ const AddAlbumModal = () => {
 								 accept='image/*' />
 				</div>
 				<Button disabled={isLoading || isSubmitting || !isValid} type='submit'>
-					Загрузить
+					Создать
 				</Button>
 			</form>
 		</Modal>

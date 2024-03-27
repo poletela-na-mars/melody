@@ -43,8 +43,9 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
 	}, []);
 
 	return (
-		<div className='w-full px-6'>
+		<div className='w-full px-6 pb-5'>
 			<div className='flex items-center gap-x-4 overflow-y-auto'>
+				{/*TODO - Add music*/}
 				<ListItem image='/images/new-album.png' name='Создать Альбом' onClickAction={onAddAlbumButtonClick} />
 				<ListItem image='/images/liked.png' name='Любимая музыка' href='liked' />
 				{/*TODO - Play Recommended music*/}

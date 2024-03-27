@@ -3,8 +3,9 @@ import React from 'react';
 import Header from '@/components/Header';
 import LibraryContent from './components/LibraryContent';
 
-import getSongsByTitle from '@/actions/getSongsByTitle';
 import SearchInput from '@/components/SearchInput';
+
+import getSongsByUserIdAndTitle from '@/actions/getSongsByUserIdAndTitle';
 
 interface LibraryProps {
 	searchParams: {
@@ -15,8 +16,7 @@ interface LibraryProps {
 export const revalidate = 0;
 
 const Library = async ({ searchParams }: LibraryProps) => {
-	// TODO: getSongsByUserIdAndTitle
-	const songs = await getSongsByTitle(searchParams.title);
+	const songs = await getSongsByUserIdAndTitle(searchParams.title);
 
 	return (
 		<div className='bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto'>
