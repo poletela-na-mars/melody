@@ -6,6 +6,7 @@ import LibraryContent from './components/LibraryContent';
 import SearchInput from '@/components/SearchInput';
 
 import getSongsByUserIdAndTitle from '@/actions/getSongsByUserIdAndTitle';
+import getAlbumsByUserIdAndTitle from '@/actions/getAlbumsByUserIdAndTitle';
 
 interface LibraryProps {
 	searchParams: {
@@ -17,6 +18,7 @@ export const revalidate = 0;
 
 const Library = async ({ searchParams }: LibraryProps) => {
 	const songs = await getSongsByUserIdAndTitle(searchParams.title);
+	const albums = await getAlbumsByUserIdAndTitle(searchParams.title);
 
 	return (
 		<div className='bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto'>
@@ -26,11 +28,11 @@ const Library = async ({ searchParams }: LibraryProps) => {
 				</h1>
 				<div className='mb-2 flex flex-col gap-y-6'>
 					<h2 className='text-white text-3xl font-semibold'>
-						<SearchInput placeholder='Введите название песни...' />
+						<SearchInput placeholder='Введите название песни или альбома...' />
 					</h2>
 				</div>
 			</Header>
-			<LibraryContent songs={songs} />
+			<LibraryContent songs={songs} albums={albums} />
 		</div>
 	);
 };

@@ -13,13 +13,14 @@ import useAddAlbumModal from '@/hooks/useAddAlbumModal';
 import { useUser } from '@/hooks/useUser';
 import useOnPlay from '@/hooks/useOnPlay';
 
-import { Song } from '@/types';
+import { Album, Song } from '@/types';
 
 interface LibraryContentProps {
 	songs: Song[];
+	albums: Album[];
 }
 
-const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
+const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 	const authModal = useAuthModal();
 	const addAlbumModal = useAddAlbumModal();
 	const { user } = useUser();
@@ -69,12 +70,11 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs }) => {
 							mt-6
 						`}>
 						{
-							songs.length
+							albums.length
 								?
-								// TODO - albums instead of songs
-								songs.map((song) =>
+								albums.map((album) =>
 									// TODO - Album Page
-									<AlbumItem key={song.id} onClick={(id: string) => onPlay(id)} data={song} />
+									<AlbumItem key={album.id} onClick={(id: string) => onPlay(id)} data={album} />
 								)
 								: <h2 className='text-neutral-400 pb-6 col-span-full'>
 									Альбомы не найдены

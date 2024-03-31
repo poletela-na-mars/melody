@@ -1,6 +1,6 @@
 import React from 'react';
 
-import getSongs from '@/actions/getSongs';
+import getSongsByUserId from '@/actions/getSongsByUserId';
 
 import Header from '@/components/Header';
 import ListItem from '@/components/ListItem';
@@ -11,7 +11,7 @@ import Controls from '@/components/Controls';
 export const revalidate = 0;
 
 export default async function Home() {
-	const songs = await getSongs();
+	const songs = await getSongsByUserId();
 
 	return (
 		<div className='bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto'>
