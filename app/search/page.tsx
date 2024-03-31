@@ -4,7 +4,8 @@ import Header from '@/components/Header';
 import SearchInput from '@/components/SearchInput';
 import SearchContent from './components/SearchContent';
 
-import getSongsByTitle from '@/actions/getSongsByTitle';
+import getAlbumsByUserIdAndTitle from '@/actions/getAlbumsByUserIdAndTitle';
+import getSongsByUserIdAndTitle from '@/actions/getSongsByUserIdAndTitle';
 
 interface SearchProps {
 	searchParams: {
@@ -15,7 +16,9 @@ interface SearchProps {
 export const revalidate = 0;
 
 const Search = async ({ searchParams }: SearchProps) => {
-	const songs = await getSongsByTitle(searchParams.title);
+	// TODO: + serach in common albums
+	const songs = await getSongsByUserIdAndTitle(searchParams.title);
+	const albums = await getAlbumsByUserIdAndTitle(searchParams.title);
 
 	return (
 		<div className='bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto'>
@@ -25,11 +28,11 @@ const Search = async ({ searchParams }: SearchProps) => {
 				</h1>
 				<div className='mb-2 flex flex-col gap-y-6'>
 					<h2 className='text-white text-3xl font-semibold'>
-						<SearchInput placeholder='Введите название песни...' />
+						<SearchInput placeholder='Введите название песни или альбома...' />
 					</h2>
 				</div>
 			</Header>
-			<SearchContent songs={songs} />
+			<SearchContent songs={songs} albums={albums} />
 		</div>
 	);
 };

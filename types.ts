@@ -11,6 +11,7 @@ export interface Song {
 	song_path: string;
 	image_path: string;
 	listen_counter: number;
+	album_id: string;
 }
 
 export interface Album {

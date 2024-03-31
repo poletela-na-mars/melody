@@ -7,17 +7,19 @@ import useOnPlay from '@/hooks/useOnPlay';
 
 import MediaItem from '@/components/MediaItem';
 import LikeButton from '@/components/LikeButton';
+import AlbumItem from '@/components/AlbumItem';
 
 import useAuthModal from '@/hooks/useAuthModal';
 import { useUser } from '@/hooks/useUser';
 
-import { Song } from '@/types';
+import { Album, Song } from '@/types';
 
 interface SearchContentProps {
 	songs: Song[];
+	albums: Album[];
 }
 
-const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
+const SearchContent: React.FC<SearchContentProps> = ({ songs, albums }) => {
 	const onPlay = useOnPlay(songs);
 
 	const authModal = useAuthModal();
@@ -31,26 +33,56 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs }) => {
 		}
 	}, []);
 
-	if (!songs.length) {
-		return (
-			<div className='lfex flex-col gap-y-2 w-full px-6 text-neutral-400'>
-				Музыка не найдена
-			</div>
-		)
-	}
-
 	return (
-		<div className='flex flex-col gap-y-2 w-full px-6'>
+		<div className='w-full px-6 pb-5'>
 			{
-				songs.map((song) => (
-					<div key={song.id} className='flex items-center gap-x-4 w-full'>
-						<div className='flex-1'>
-							<MediaItem data={song} onClick={(id: string) => onPlay(id)} />
-						</div>
-						<LikeButton songId={song.id} />
+				<>
+					<h2 className='text-white text-2xl font-semibold'>
+						Альбомы
+					</h2>
+					<div className={`
+							grid
+							grid-cols-2
+							sm:grid-cols-3
+							md:grid-cols-3
+							lg:grid-cols-4
+							xl:grid-cols-5
+							2xl:grid-cols-8
+							gap-4
+							mt-6
+						`}>
+						{
+							albums.length
+								? albums.map((album) =>
+									// TODO - Album Page
+									<AlbumItem key={album.id} onClick={(id: string) => onPlay(id)} data={album} />
+								)
+								: <h2 className='text-neutral-400 pb-6 col-span-full'>
+									Альбомы не найдены
+								</h2>
+						}
 					</div>
-				))
+				</>
 			}
+			<h2 className='text-white text-2xl font-semibold pb-0 pt-5'>
+				Песни
+			</h2>
+			<div className='flex flex-col gap-y-2 pt-6'>
+				{
+					songs.length
+						? songs.map((song) => (
+							<div key={song.id} className='flex items-center gap-x-4'>
+								<div className='flex-1'>
+									<MediaItem data={song} onClick={(id: string) => onPlay(id)} />
+								</div>
+								<LikeButton songId={song.id} />
+							</div>
+						))
+						: <h2 className='text-neutral-400 pb-6'>
+							Музыка не найдена
+						</h2>
+				}
+			</div>
 		</div>
 	);
 };
