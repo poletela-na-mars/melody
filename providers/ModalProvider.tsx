@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import AuthModal from '@/components/AuthModal';
 import UploadModal from '@/components/UploadModal';
 import AddAlbumModal from '@/components/AddAlbumModal';
+import AddToAlbumModal from '@/components/AddToAlbumModal';
 
 const ModalProvider: React.FC = () => {
 	const [isMounted, setIsMounted] = useState(false);
@@ -20,6 +21,7 @@ const ModalProvider: React.FC = () => {
 			<AuthModal />
 			<UploadModal />
 			<AddAlbumModal />
+			<AddToAlbumModal />
 		</>
 	);
 };

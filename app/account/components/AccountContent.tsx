@@ -2,12 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
 
 import { useUser } from '@/hooks/useUser';
-import { postData } from '@/libs/helpers';
-
-import Button from '@/components/Button';
 
 // TODO - Fill Account Content
 

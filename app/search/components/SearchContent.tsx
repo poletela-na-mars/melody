@@ -8,6 +8,7 @@ import useOnPlay from '@/hooks/useOnPlay';
 import MediaItem from '@/components/MediaItem';
 import LikeButton from '@/components/LikeButton';
 import AlbumItem from '@/components/AlbumItem';
+import AddToAlbumButton from '@/components/AddToAlbumButton';
 
 import useAuthModal from '@/hooks/useAuthModal';
 import { useUser } from '@/hooks/useUser';
@@ -76,6 +77,7 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs, albums }) => {
 									<MediaItem data={song} onClick={(id: string) => onPlay(id)} />
 								</div>
 								<LikeButton songId={song.id} />
+								<AddToAlbumButton songId={song.id} albums={albums} />
 							</div>
 						))
 						: <h2 className='text-neutral-400 pb-6'>

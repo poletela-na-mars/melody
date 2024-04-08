@@ -88,7 +88,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
 
 	return (
 		<button className='hover:opacity-75 transition' onClick={handleLike}>
-			<Icon color={isLiked ? theme.mainBlue : 'white'} className='like-button' />
+			<Icon color={isLiked ? theme.mainBlue : 'white'} className='like-button' size='22' />
 			<Tooltip anchorSelect='.like-button' place='bottom'>
 				Добавить в «Любимую музыку»
 			</Tooltip>

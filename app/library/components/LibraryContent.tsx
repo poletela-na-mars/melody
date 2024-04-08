@@ -7,6 +7,7 @@ import MediaItem from '@/components/MediaItem';
 import LikeButton from '@/components/LikeButton';
 import ListItem from '@/components/ListItem';
 import AlbumItem from '@/components/AlbumItem';
+import AddToAlbumButton from '@/components/AddToAlbumButton';
 
 import useAuthModal from '@/hooks/useAuthModal';
 import useAddAlbumModal from '@/hooks/useAddAlbumModal';
@@ -95,6 +96,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 									<MediaItem data={song} onClick={(id: string) => onPlay(id)} />
 								</div>
 								<LikeButton songId={song.id} />
+								<AddToAlbumButton songId={song.id} albums={albums} />
 							</div>
 						))
 						: <h2 className='text-neutral-400 pb-6'>
