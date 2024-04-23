@@ -55,8 +55,7 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs, albums }) => {
 						{
 							albums.length
 								? albums.map((album) =>
-									// TODO - Album Page
-									<AlbumItem key={album.id} onClick={(id: string) => onPlay(id)} data={album} />
+									<AlbumItem key={album.id} onClick={(id: string) => router.push(`/albums/${id}`)} data={album} />
 								)
 								: <h2 className='text-neutral-400 pb-6 col-span-full'>
 									Альбомы не найдены

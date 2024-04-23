@@ -34,7 +34,6 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 	const { user } = useUser();
 
 	const handleLogout = async () => {
-		// TODO - popup before logging out
 		const { error } = await supabaseClient.auth.signOut();
 
 		player.reset();

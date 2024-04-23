@@ -16,7 +16,7 @@ interface SearchProps {
 export const revalidate = 0;
 
 const Search = async ({ searchParams }: SearchProps) => {
-	// TODO: + serach in common albums
+	// TODO: + search in common albums
 	const songs = await getSongsByUserIdAndTitle(searchParams.title);
 	const albums = await getAlbumsByUserIdAndTitle(searchParams.title);
 

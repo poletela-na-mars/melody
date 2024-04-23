@@ -8,8 +8,6 @@ import LikedContent from './components/LikedContent';
 
 export const revalidate = 0;
 
-// TODO - check that user can't create a playlist with such a name
-
 const Liked = async () => {
 	const songs = await getLikedSongs();
 

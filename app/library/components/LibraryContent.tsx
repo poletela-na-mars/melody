@@ -51,8 +51,8 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 				<ListItem image='/images/add-album.png' name='Создать Альбом' onClickAction={onAddAlbumButtonClick} />
 				<ListItem image='/images/liked.png' name='Любимая музыка' href='liked' />
 				{/*TODO - Play Recommended music*/}
-				<ListItem image='/images/recommended-music.png' name='Рекомендованная музыка' onClickAction={() => {
-				}} />
+				{/*<ListItem image='/images/recommended-music.png' name='Рекомендованная музыка' onClickAction={() => {*/}
+				{/*}} />*/}
 			</div>
 			{
 				<>
@@ -74,8 +74,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 							albums.length
 								?
 								albums.map((album) =>
-									// TODO - Album Page
-									<AlbumItem key={album.id} onClick={(id: string) => onPlay(id)} data={album} />
+									<AlbumItem key={album.id} onClick={(id: string) => router.push(`/albums/${id}`)} data={album} />
 								)
 								: <h2 className='text-neutral-400 pb-6 col-span-full'>
 									Альбомы не найдены

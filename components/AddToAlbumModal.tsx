@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import uniqid from 'uniqid';
+import React, { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
@@ -46,8 +45,6 @@ const AddToAlbumModal = () => {
 				toast.error('Ошибка определения пользователя');
 				return;
 			}
-
-			const uniqueID = uniqid();
 
 			const { error: supabaseError } = await supabaseClient
 				.from('songs')
