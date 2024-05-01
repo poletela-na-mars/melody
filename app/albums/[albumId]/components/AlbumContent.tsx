@@ -14,6 +14,7 @@ import { useUser } from '@/hooks/useUser';
 import useLoadImage from '@/hooks/useLoadImage';
 import useOnPlay from '@/hooks/useOnPlay';
 import { getUserNameFromEmail } from '@/utils/getUserNameFromEmail';
+import { domUserId } from '@/consts/domUserId';
 
 import { Album, Song } from '@/types';
 
@@ -50,7 +51,7 @@ const AlbumContent: React.FC<AlbumContentProps> = ({ songs, album }: AlbumConten
 							{album.title}
 						</h2>
 						<p className='text-neutral-400 text-md font-medium'>
-							{user?.id && getUserNameFromEmail(user?.email)}
+							{album.user_id != domUserId && getUserNameFromEmail(user?.email)}
 						</p>
 					</div>
 				</div>
@@ -65,7 +66,7 @@ const AlbumContent: React.FC<AlbumContentProps> = ({ songs, album }: AlbumConten
 										<MediaItem data={song} onClick={(id: string) => onPlay(id)} />
 									</div>
 									<LikeButton songId={song.id} />
-									<RemoveFromAlbumButton songId={song.id} />
+									{album.user_id != domUserId && <RemoveFromAlbumButton songId={song.id} />}
 								</div>
 							))
 							: <h2 className='text-neutral-400 pb-6'>

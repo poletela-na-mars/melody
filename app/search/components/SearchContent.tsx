@@ -18,9 +18,10 @@ import { Album, Song } from '@/types';
 interface SearchContentProps {
 	songs: Song[];
 	albums: Album[];
+	mixes: Album[];
 }
 
-const SearchContent: React.FC<SearchContentProps> = ({ songs, albums }) => {
+const SearchContent: React.FC<SearchContentProps> = ({ songs, albums, mixes }) => {
 	const onPlay = useOnPlay(songs);
 
 	const authModal = useAuthModal();
@@ -36,12 +37,10 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs, albums }) => {
 
 	return (
 		<div className='w-full px-6 pb-5'>
-			{
-				<>
-					<h2 className='text-white text-2xl font-semibold'>
-						Альбомы
-					</h2>
-					<div className={`
+			<h2 className='text-white text-2xl font-semibold'>
+				Подборки
+			</h2>
+			<div className={`
 							grid
 							grid-cols-2
 							sm:grid-cols-3
@@ -52,18 +51,40 @@ const SearchContent: React.FC<SearchContentProps> = ({ songs, albums }) => {
 							gap-4
 							mt-6
 						`}>
-						{
-							albums.length
-								? albums.map((album) =>
-									<AlbumItem key={album.id} onClick={(id: string) => router.push(`/albums/${id}`)} data={album} />
-								)
-								: <h2 className='text-neutral-400 pb-6 col-span-full'>
-									Альбомы не найдены
-								</h2>
-						}
-					</div>
-				</>
-			}
+				{
+					mixes.length
+						? mixes.map((mix) =>
+							<AlbumItem key={mix.id} onClick={(id: string) => router.push(`/albums/${id}`)} data={mix} />
+						)
+						: <h2 className='text-neutral-400 pb-6 col-span-full'>
+							Подборки не найдены
+						</h2>
+				}
+			</div>
+			<h2 className='text-white text-2xl font-semibold  pb-0 pt-5'>
+				Альбомы
+			</h2>
+			<div className={`
+							grid
+							grid-cols-2
+							sm:grid-cols-3
+							md:grid-cols-3
+							lg:grid-cols-4
+							xl:grid-cols-5
+							2xl:grid-cols-8
+							gap-4
+							mt-6
+						`}>
+				{
+					albums.length
+						? albums.map((album) =>
+							<AlbumItem key={album.id} onClick={(id: string) => router.push(`/albums/${id}`)} data={album} />
+						)
+						: <h2 className='text-neutral-400 pb-6 col-span-full'>
+							Альбомы не найдены
+						</h2>
+				}
+			</div>
 			<h2 className='text-white text-2xl font-semibold pb-0 pt-5'>
 				Песни
 			</h2>

@@ -6,6 +6,7 @@ import SearchContent from './components/SearchContent';
 
 import getAlbumsByUserIdAndTitle from '@/actions/getAlbumsByUserIdAndTitle';
 import getSongsByUserIdAndTitle from '@/actions/getSongsByUserIdAndTitle';
+import getMixesByTitle from '@/actions/getMixesByTitle';
 
 interface SearchProps {
 	searchParams: {
@@ -16,9 +17,9 @@ interface SearchProps {
 export const revalidate = 0;
 
 const Search = async ({ searchParams }: SearchProps) => {
-	// TODO: + search in common albums
 	const songs = await getSongsByUserIdAndTitle(searchParams.title);
 	const albums = await getAlbumsByUserIdAndTitle(searchParams.title);
+	const mixes = await getMixesByTitle(searchParams.title);
 
 	return (
 		<div className='bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto'>
@@ -32,7 +33,7 @@ const Search = async ({ searchParams }: SearchProps) => {
 					</h2>
 				</div>
 			</Header>
-			<SearchContent songs={songs} albums={albums} />
+			<SearchContent songs={songs} albums={albums} mixes={mixes} />
 		</div>
 	);
 };
