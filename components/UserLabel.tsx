@@ -3,13 +3,7 @@
 import React from 'react';
 
 import { useUser } from '@/hooks/useUser';
-
-const getUserNameFromEmail = (email: string | undefined) => {
-	if (!email) return;
-
-	const [name] = email.split('@');
-	return name;
-};
+import { getUserNameFromEmail } from '@/utils/getUserNameFromEmail';
 
 const UserLabel = () => {
 	const { user } = useUser();

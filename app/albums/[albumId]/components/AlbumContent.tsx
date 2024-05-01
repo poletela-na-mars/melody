@@ -13,6 +13,7 @@ import useAuthModal from '@/hooks/useAuthModal';
 import { useUser } from '@/hooks/useUser';
 import useLoadImage from '@/hooks/useLoadImage';
 import useOnPlay from '@/hooks/useOnPlay';
+import { getUserNameFromEmail } from '@/utils/getUserNameFromEmail';
 
 import { Album, Song } from '@/types';
 
@@ -44,9 +45,14 @@ const AlbumContent: React.FC<AlbumContentProps> = ({ songs, album }: AlbumConten
 					<div className='relative min-h-[100px] min-w-[100px] overflow-hidden rounded-md'>
 						<Image className='object-cover rounded-md' fill src={imagePath || '/images/album.png'} alt='Album Cover' />
 					</div>
-					<h2 className='text-white text-3xl font-semibold'>
-						{album.title}
-					</h2>
+					<div>
+						<h2 className='text-white text-3xl font-semibold'>
+							{album.title}
+						</h2>
+						<p className='text-neutral-400 text-md font-medium'>
+							{user?.id && getUserNameFromEmail(user?.email)}
+						</p>
+					</div>
 				</div>
 			</Header>
 			<div className='w-full px-6 pb-5'>
