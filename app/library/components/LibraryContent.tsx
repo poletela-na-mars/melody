@@ -13,6 +13,7 @@ import useAuthModal from '@/hooks/useAuthModal';
 import useAddAlbumModal from '@/hooks/useAddAlbumModal';
 import { useUser } from '@/hooks/useUser';
 import useOnPlay from '@/hooks/useOnPlay';
+import useUploadModal from '@/hooks/useUploadModal';
 
 import { Album, Song } from '@/types';
 
@@ -24,6 +25,7 @@ interface LibraryContentProps {
 const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 	const authModal = useAuthModal();
 	const addAlbumModal = useAddAlbumModal();
+	const uploadModal = useUploadModal();
 	const { user } = useUser();
 	const router = useRouter();
 
@@ -37,6 +39,14 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 		return addAlbumModal.onOpen();
 	};
 
+	const onAddSongButtonClick = () => {
+		if (!user) {
+			return authModal.onOpen();
+		}
+
+		return uploadModal.onOpen();
+	};
+
 	useEffect(() => {
 		if (!user) {
 			router.replace('/');
@@ -47,8 +57,8 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 	return (
 		<div className='w-full px-6 pb-5'>
 			<div className='flex items-center gap-x-4 overflow-y-auto'>
-				{/*TODO - Add music*/}
-				<ListItem image='/images/add-album.png' name='Создать Альбом' onClickAction={onAddAlbumButtonClick} />
+				<ListItem image='/images/add-song.png' name='Добавить музыку' onClickAction={onAddSongButtonClick} />
+				<ListItem image='/images/add-album.png' name='Создать альбом' onClickAction={onAddAlbumButtonClick} />
 				<ListItem image='/images/liked.png' name='Любимая музыка' href='liked' />
 				{/*TODO - Play Recommended music*/}
 				{/*<ListItem image='/images/recommended-music.png' name='Рекомендованная музыка' onClickAction={() => {*/}
