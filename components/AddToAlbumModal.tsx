@@ -46,10 +46,31 @@ const AddToAlbumModal = () => {
 				return;
 			}
 
+			const albumsData = await supabaseClient
+				.from('songs')
+				.select('albums')
+				.eq('id', props.songId);
+			let albums = albumsData.data?.map((a) => a.albums);
+
+			if (albums && albums[0].includes(+values.albumId)) {
+				router.refresh();
+				setIsLoading(false);
+				toast.success('Песня уже есть в альбоме');
+				reset();
+				onClose();
+				return;
+			} else {
+				if (albums) {
+					albums[0].push(+values.albumId);
+				} else {
+					albums = [+values.albumId];
+				}
+			}
+
 			const { error: supabaseError } = await supabaseClient
 				.from('songs')
 				.update({
-					album_id: values.albumId
+					albums: albums.flat()
 				})
 				.eq('id', props.songId);
 

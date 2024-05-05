@@ -66,7 +66,7 @@ const AlbumContent: React.FC<AlbumContentProps> = ({ songs, album }: AlbumConten
 										<MediaItem data={song} onClick={(id: string) => onPlay(id)} />
 									</div>
 									<LikeButton songId={song.id} />
-									{album.user_id != domUserId && <RemoveFromAlbumButton songId={song.id} />}
+									{album.user_id != domUserId && <RemoveFromAlbumButton songId={song.id} albumId={album.id} />}
 								</div>
 							))
 							: <h2 className='text-neutral-400 pb-6'>

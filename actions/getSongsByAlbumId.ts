@@ -11,7 +11,7 @@ const getSongsByAlbumId = async (albumId: number): Promise<Song[]> => {
 	const { data, error } = await supabase
 		.from('songs')
 		.select('*')
-		.eq('album_id', albumId)
+		.contains('albums', [`${albumId}`])
 		.order('created_at', { ascending: false });
 
 	if (error) {

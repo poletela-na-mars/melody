@@ -13,9 +13,10 @@ import toast from 'react-hot-toast';
 
 interface RemoveFromAlbumButtonProps {
 	songId: string;
+	albumId: string;
 }
 
-const RemoveFromAlbumButton: React.FC<RemoveFromAlbumButtonProps> = ({ songId }) => {
+const RemoveFromAlbumButton: React.FC<RemoveFromAlbumButtonProps> = ({ songId, albumId }) => {
 	const router = useRouter();
 	const { supabaseClient } = useSessionContext();
 	const authModal = useAuthModal();
@@ -33,11 +34,18 @@ const RemoveFromAlbumButton: React.FC<RemoveFromAlbumButtonProps> = ({ songId })
 			return authModal.onOpen();
 		}
 
+		const albumsData = await supabaseClient
+			.from('songs')
+			.select('albums')
+			.eq('id', songId);
+		let albums = albumsData.data?.map((a) => a.albums);
+		const updAlbums = albums && albums[0]?.filter((album: string) => album != albumId);
+
 		try {
 			const { error: supabaseError } = await supabaseClient
 				.from('songs')
 				.update({
-					album_id: null,
+					albums: updAlbums,
 				})
 				.eq('id', songId);
 
