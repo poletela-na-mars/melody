@@ -51,20 +51,20 @@ const AddToAlbumModal = () => {
 				.select('albums')
 				.eq('id', props.songId);
 			let albums = albumsData.data?.map((a) => a.albums);
-
-			if (albums && albums[0].includes(+values.albumId)) {
-				router.refresh();
-				setIsLoading(false);
-				toast.success('Песня уже есть в альбоме');
-				reset();
-				onClose();
-				return;
-			} else {
-				if (albums) {
-					albums[0].push(+values.albumId);
+			
+			if (albums && albums[0]) {
+				if (albums[0].includes(+values.albumId)) {
+					router.refresh();
+					setIsLoading(false);
+					toast.success('Песня уже есть в альбоме');
+					reset();
+					onClose();
+					return;
 				} else {
-					albums = [+values.albumId];
+					albums[0].push(+values.albumId);
 				}
+			} else {
+				albums = [+values.albumId];
 			}
 
 			const { error: supabaseError } = await supabaseClient
