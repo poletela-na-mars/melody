@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import qs from 'query-string';
 
 import MediaItem from '@/components/MediaItem';
 import LikeButton from '@/components/LikeButton';
@@ -14,6 +15,8 @@ import useAddAlbumModal from '@/hooks/useAddAlbumModal';
 import { useUser } from '@/hooks/useUser';
 import useOnPlay from '@/hooks/useOnPlay';
 import useUploadModal from '@/hooks/useUploadModal';
+
+import { fakeForYouAlbum, forYouAlbums } from '@/consts/forYouAlbums';
 
 import { Album, Song } from '@/types';
 
@@ -54,6 +57,19 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 		}
 	}, []);
 
+	const onForYouAlbumClick = (type: string) => {
+		const query = {
+			type: type,
+		};
+
+		const url = qs.stringifyUrl({
+			url: 'for-you',
+			query: query,
+		});
+
+		router.push(url);
+	};
+
 	return (
 		<div className='w-full px-6 pb-5'>
 			<div className='flex items-center gap-x-4 overflow-y-auto'>
@@ -64,12 +80,10 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 				{/*<ListItem image='/images/recommended-music.png' name='Рекомендованная музыка' onClickAction={() => {*/}
 				{/*}} />*/}
 			</div>
-			{
-				<>
-					<h2 className='text-white text-2xl font-semibold pb-0 pt-6'>
-						Альбомы
-					</h2>
-					<div className={`
+			<h2 className='text-white text-2xl font-semibold pb-0 pt-6'>
+				Ваша музыка...
+			</h2>
+			<div className={`
 							grid
 							grid-cols-2
 							sm:grid-cols-3
@@ -80,19 +94,42 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 							gap-4
 							mt-6
 						`}>
-						{
-							albums.length
-								?
-								albums.map((album) =>
-									<AlbumItem key={album.id} onClick={(id: string) => router.push(`/albums/${id}`)} data={album} />
-								)
-								: <h2 className='text-neutral-400 pb-6 col-span-full'>
-									Альбомы не найдены
-								</h2>
-						}
-					</div>
-				</>
-			}
+				{
+					forYouAlbums.length
+						?
+						forYouAlbums.map((album, idx) =>
+							<AlbumItem key={idx} onClick={(id: string) => onForYouAlbumClick(id)} data={fakeForYouAlbum(album)} />
+						)
+						: <h2 className='text-neutral-400 pb-6 col-span-full'>
+							Ваши подборки не найдены
+						</h2>
+				}
+			</div>
+			<h2 className='text-white text-2xl font-semibold pb-0 pt-6'>
+				Альбомы
+			</h2>
+			<div className={`
+							grid
+							grid-cols-2
+							sm:grid-cols-3
+							md:grid-cols-3
+							lg:grid-cols-4
+							xl:grid-cols-5
+							2xl:grid-cols-8
+							gap-4
+							mt-6
+						`}>
+				{
+					albums.length
+						?
+						albums.map((album) =>
+							<AlbumItem key={album.id} onClick={(id: string) => router.push(`/albums/${id}`)} data={album} />
+						)
+						: <h2 className='text-neutral-400 pb-6 col-span-full'>
+							Альбомы не найдены
+						</h2>
+				}
+			</div>
 			<h2 className='text-white text-2xl font-semibold pb-0 pt-5'>
 				Песни
 			</h2>
