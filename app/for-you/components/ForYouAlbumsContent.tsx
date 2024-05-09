@@ -51,7 +51,7 @@ const ForYouAlbumsContent = ({ songs, albums, queryType }: ForYouAlbumsContentPr
 				{
 					albums.length
 						? albums.map((album, idx) =>
-							<AlbumItem key={idx} onClick={() => sortSongsByType(album.title)} data={fakeAlbum(album.title)} />
+							<AlbumItem key={idx} onClick={() => sortSongsByType(album.title)} data={fakeAlbum(album.title, '')} />
 						)
 						: <h2 className='text-neutral-400 pb-6 col-span-full'>
 							Ваши подборки не найдены

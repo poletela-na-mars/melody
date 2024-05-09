@@ -31,7 +31,7 @@ const getUsersGenresAlbums = async (): Promise<Album[]> => {
 	const uniqueGenres = Array.from(new Set(allGenres));
 
 	const usersGenresAlbums: Album[] = [];
-	uniqueGenres.forEach((obj) => obj && usersGenresAlbums.push(fakeAlbum(obj)));
+	uniqueGenres.forEach((obj) => obj && usersGenresAlbums.push(fakeAlbum(obj, '')));
 
 	return usersGenresAlbums || [];
 };

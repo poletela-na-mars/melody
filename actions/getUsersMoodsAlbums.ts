@@ -31,7 +31,7 @@ const getUsersMoodsAlbums = async (): Promise<Album[]> => {
 	const uniqueMoods = Array.from(new Set(allMoods));
 
 	const usersMoodsAlbums: Album[] = [];
-	uniqueMoods.forEach((obj) => obj && usersMoodsAlbums.push(fakeAlbum(obj)));
+	uniqueMoods.forEach((obj) => obj && usersMoodsAlbums.push(fakeAlbum(obj, '')));
 
 	return usersMoodsAlbums || [];
 };

@@ -15,7 +15,12 @@ interface AlbumItemProps {
 }
 
 const AlbumItem: React.FC<AlbumItemProps> = ({ data, onClick }) => {
-	const imagePath = useLoadImage(data);
+	let imagePath = '';
+	imagePath = useLoadImage(data) as string;
+
+	if (data.image_path && data.image_path.startsWith('/images')) {
+		imagePath = data.image_path;
+	}
 
 	return (
 		<div onClick={() => onClick(data.id)} className={`relative group flex flex-col items-center justify-center
