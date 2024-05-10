@@ -9,6 +9,7 @@ import LikeButton from '@/components/LikeButton';
 import ListItem from '@/components/ListItem';
 import AlbumItem from '@/components/AlbumItem';
 import AddToAlbumButton from '@/components/AddToAlbumButton';
+import DeleteButton from '@/components/DeleteButton';
 
 import useAuthModal from '@/hooks/useAuthModal';
 import useAddAlbumModal from '@/hooks/useAddAlbumModal';
@@ -142,6 +143,9 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 									<MediaItem data={song} onClick={(id: string) => onPlay(id)} />
 								</div>
 								<LikeButton songId={song.id} />
+								<DeleteButton songId={song.id} />
+								{/*TODO - удалять альбом - обложка, строка в таблице*/}
+								{/*TODO - удалять аккаунт пользователя - искать песни по его id и удалять, как песни; удалять его альбомы по id; удалить строку в таблице и выход из аккаунта*/}
 								<AddToAlbumButton songId={song.id} albums={albums} />
 							</div>
 						))
