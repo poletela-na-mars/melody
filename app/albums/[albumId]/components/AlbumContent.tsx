@@ -8,6 +8,7 @@ import MediaItem from '@/components/MediaItem';
 import LikeButton from '@/components/LikeButton';
 import Header from '@/components/Header';
 import RemoveFromAlbumButton from '@/components/RemoveFromAlbumButton';
+import DeleteAlbumButton from '@/components/DeleteAlbumButton';
 
 import useAuthModal from '@/hooks/useAuthModal';
 import { useUser } from '@/hooks/useUser';
@@ -42,18 +43,22 @@ const AlbumContent: React.FC<AlbumContentProps> = ({ songs, album }: AlbumConten
 	return (
 		<>
 			<Header className='from-bg-neutral-900'>
-				<div className='flex items-end gap-x-4 mt-8'>
-					<div className='relative min-h-[100px] min-w-[100px] overflow-hidden rounded-md'>
-						<Image className='object-cover rounded-md' fill src={imagePath || '/images/album.png'} alt='Album Cover' />
+				<div className='flex items-end justify-between mt-8'>
+					<div className='flex items-end gap-x-4'>
+						<div className='relative min-h-[100px] min-w-[100px] overflow-hidden rounded-md'>
+							<Image className='object-cover rounded-md' fill src={imagePath || '/images/album.png'}
+										 alt='Album Cover' />
+						</div>
+						<div>
+							<h2 className='text-white text-3xl font-semibold'>
+								{album.title}
+							</h2>
+							<p className='text-neutral-400 text-md font-medium'>
+								{album.user_id != domUserId && getUserNameFromEmail(user?.email)}
+							</p>
+						</div>
 					</div>
-					<div>
-						<h2 className='text-white text-3xl font-semibold'>
-							{album.title}
-						</h2>
-						<p className='text-neutral-400 text-md font-medium'>
-							{album.user_id != domUserId && getUserNameFromEmail(user?.email)}
-						</p>
-					</div>
+					{album.user_id === user?.id && <DeleteAlbumButton album={album} />}
 				</div>
 			</Header>
 			<div className='w-full px-6 pb-5'>

@@ -12,11 +12,11 @@ import useGetSongById from '@/hooks/useGetSongById';
 
 import { AiOutlineDelete } from 'react-icons/ai';
 
-interface DeleteButtonProps {
+interface DeleteSongButtonProps {
 	songId: string;
 }
 
-const DeleteButton: React.FC<DeleteButtonProps> = ({ songId }) => {
+const DeleteSongButton: React.FC<DeleteSongButtonProps> = ({ songId }) => {
 	const router = useRouter();
 	const { supabaseClient } = useSessionContext();
 	const authModal = useAuthModal();
@@ -76,4 +76,4 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ songId }) => {
 	);
 };
 
-export default DeleteButton;
+export default DeleteSongButton;
