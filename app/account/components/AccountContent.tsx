@@ -1,48 +1,56 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
+import toast from 'react-hot-toast';
+
+import Button from '@/components/Button';
 
 import { useUser } from '@/hooks/useUser';
+import useAuthModal from '@/hooks/useAuthModal';
 
-// TODO - Fill Account Content
+const supabaseAdmin = createClient(
+	process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+	process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY as string
+);
 
-const AccountContent = () => {
+const AccountContent = async () => {
 	const router = useRouter();
-	const { isLoading, user } = useUser();
-
-	const [loading, setLoading] = useState(false);
+	const { user } = useUser();
+	const authModal = useAuthModal();
 
 	useEffect(() => {
-		if (!isLoading && !user) {
+		if (!user) {
 			router.replace('/');
 		}
-	}, [isLoading, user, router]);
+	}, [user, router]);
+
+	const onDeleteUserButtonClick = async () => {
+		try {
+			const { data, error: userDeleteError } = await supabaseAdmin.auth.admin.deleteUser(user?.id as string);
+
+			const error = userDeleteError;
+			if (error) {
+				return toast.error(error.message);
+			}
+
+			toast.success('Аккаунт пользователя удален');
+			router.replace('/');
+			return authModal.onOpen();
+		} catch (err) {
+			toast.error('Что-то пошло не так!');
+		}
+	};
 
 	return (
 		<div className='mb-7 px-6'>
-			{/*{*/}
-			{/*	!subscription ? (*/}
-			{/*		<div className='flex flex-col gap-y-4'>*/}
-			{/*			<p>У Вас нет подписки.</p>*/}
-			{/*			<Button*/}
-			{/*				onClick={subscribeModal.onOpen}*/}
-			{/*				className='w-[300px]'*/}
-			{/*			>*/}
-			{/*				Оформить подписку*/}
-			{/*			</Button>*/}
-			{/*		</div>*/}
-			{/*	) : (*/}
-			{/*		<div className='flex flex-col gap-y-4'>*/}
-			{/*			<p>*/}
-			{/*				У Вас уже есть подписка <b>{subscription?.prices?.products?.name}</b>.*/}
-			{/*			</p>*/}
-			{/*			<Button disabled={loading || isLoading} onClick={redirectCustomerPortal} className='w-[300px]'>*/}
-			{/*				Посмотреть подробности подписки*/}
-			{/*			</Button>*/}
-			{/*		</div>*/}
-			{/*	)*/}
-			{/*}*/}
+			<Button
+				onClick={onDeleteUserButtonClick}
+				className='w-[200px]'
+			>
+				Удалить аккаунт
+			</Button>
 		</div>
 	);
 };
