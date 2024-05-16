@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { HiHome } from 'react-icons/hi';
 import { BiSearch } from 'react-icons/bi';
+import { IoStatsChart } from 'react-icons/io5';
 import { twMerge } from 'tailwind-merge';
 
 import Box from './Box';
@@ -36,6 +37,12 @@ const SideBar: React.FC<SideBarProps> = ({ children, songs }) => {
 			label: 'Поиск',
 			active: pathname === '/search',
 			href: '/search'
+		},
+		{
+			icon: IoStatsChart,
+			label: 'Статистика',
+			active: pathname === '/stat',
+			href: '/stat'
 		}
 	], [pathname]);
 

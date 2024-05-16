@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 
@@ -16,6 +16,7 @@ import useAddAlbumModal from '@/hooks/useAddAlbumModal';
 import { useUser } from '@/hooks/useUser';
 import useOnPlay from '@/hooks/useOnPlay';
 import useUploadModal from '@/hooks/useUploadModal';
+import useGetRecommendedSongs from '@/hooks/useGetRecommendedSongs';
 
 import { fakeForYouAlbum, forYouAlbums } from '@/consts/forYouAlbums';
 
@@ -33,7 +34,10 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 	const { user } = useUser();
 	const router = useRouter();
 
-	const onPlay = useOnPlay(songs);
+	const [loadedSongs, setLoadedSongs] = useState<Song[]>(songs);
+
+	const { recommendedSongs } = useGetRecommendedSongs();
+	const onPlay = useOnPlay(loadedSongs);
 
 	const onAddAlbumButtonClick = () => {
 		if (!user) {
@@ -49,6 +53,15 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 		}
 
 		return uploadModal.onOpen();
+	};
+
+	const onRecommendSongsButtonClick = () => {
+		if (!user) {
+			return authModal.onOpen();
+		}
+
+		setLoadedSongs(recommendedSongs);
+		onPlay(recommendedSongs[0].id);
 	};
 
 	useEffect(() => {
@@ -77,9 +90,7 @@ const LibraryContent: React.FC<LibraryContentProps> = ({ songs, albums }) => {
 				<ListItem image='/images/add-song.png' name='Добавить музыку' onClickAction={onAddSongButtonClick} />
 				<ListItem image='/images/add-album.png' name='Создать альбом' onClickAction={onAddAlbumButtonClick} />
 				<ListItem image='/images/liked.png' name='Любимая музыка' href='liked' />
-				{/*TODO - Play Recommended music*/}
-				{/*<ListItem image='/images/recommended-music.png' name='Рекомендованная музыка' onClickAction={() => {*/}
-				{/*}} />*/}
+				<ListItem image='/images/recommended-music.png' name='Рекомендованная музыка' onClickAction={onRecommendSongsButtonClick} />
 			</div>
 			<h2 className='text-white text-2xl font-semibold pb-0 pt-6'>
 				Ваша музыка...
