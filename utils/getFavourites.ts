@@ -19,8 +19,8 @@ export const getFavourites = (songs: Song[]): { favAuthor: string, favGenre: str
 		}
 	});
 
-	favGenre = Array.from(genresMap.entries()).reduce((acc, el) => el[1] > acc[1] ? el : acc)[0];
-	favMood = Array.from(moodsMap.entries()).reduce((acc, el) => el[1] > acc[1] ? el : acc)[0];
+	favGenre = Array.from(genresMap.entries()).reduce((acc: [string, number], el: [string, number]): [string, number] => el[1] > acc[1] ? el : acc, ['', 0])[0];
+	favMood = Array.from(moodsMap.entries()).reduce((acc: [string, number], el: [string, number]): [string, number] => el[1] > acc[1] ? el : acc, ['', 0])[0];
 
 	return { favAuthor, favGenre, favMood };
 };
