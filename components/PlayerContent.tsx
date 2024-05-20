@@ -13,6 +13,7 @@ import { BsPauseFill, BsPlayFill } from 'react-icons/bs';
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2';
 import { AiFillStepBackward, AiFillStepForward } from 'react-icons/ai';
 import { TbRepeatOff, TbRepeatOnce } from 'react-icons/tb';
+import { PiTimerBold } from 'react-icons/pi';
 
 import usePlayer from '@/hooks/usePlayer';
 import { padStartWithZero } from '@/utils/padStartWithZero';
@@ -20,6 +21,8 @@ import { getSongDuration } from '@/utils/getSongDuration';
 import { convertSecToTime } from '@/utils/convertSecToTime';
 
 import { Song } from '@/types';
+import Input from '@/components/Input';
+import Button from '@/components/Button';
 
 interface PlayerContentProps {
 	song: Song;
@@ -45,7 +48,14 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [repeatState, setRepeatState] = useState(player.repeat);
 
+	const [timer, setTimer] = useState(0);
+	const [isTimerInputOpened, setTimerInputOpened] = useState(false);
+	const [isTimerWorking, setTimerWorking] = useState(false);
+
 	const isCounterSubmitted = useRef(false);
+	const timerRef = useRef(0);
+	const isTimerSet = useRef(false);
+	const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
 	const Icon = isPlaying ? BsPauseFill : BsPlayFill;
 	const VolumeIcon = !volumeState ? HiSpeakerXMark : HiSpeakerWave;
@@ -97,6 +107,17 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 		}
 	};
 
+	const onTimerButtonClick = () => {
+		setTimerInputOpened((val) => !val);
+	};
+
+	const onTimerOKButtonClick = () => {
+		setTimerWorking(true);
+		isTimerSet.current = true;
+		timerRef.current = timer;
+		setTimerInputOpened(false);
+	};
+
 	const setSongTime = (value: number) => {
 		setSeconds(value);
 		const tempCurTime = convertSecToTime(value);
@@ -140,6 +161,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 	useEffect(() => {
 		if (duration) {
 			setSongDuration(getSongDuration(duration));
+			setTimer(timerRef.current);
 		}
 
 	}, [duration]);
@@ -163,6 +185,26 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 			sound?.unload();
 		}
 	}, [sound]);
+
+	useEffect(() => {
+		if (isTimerWorking && isTimerSet.current) {
+			const timerInterval = setInterval(() => {
+				isTimerSet.current = false;
+				timerIntervalRef.current = timerInterval;
+
+				if (isTimerWorking) {
+					if (timerRef.current - 1 > 0) {
+						timerRef.current--;
+					} else {
+						pause();
+						setTimerWorking(false);
+						timerRef.current = 0;
+						clearInterval(timerIntervalRef.current);
+					}
+				}
+			}, 60_000);
+		}
+	}, [isTimerWorking]);
 
 	const handlePlay = () => {
 		if (!isPlaying) {
@@ -221,11 +263,25 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
 														 className='text-neutral-400 cursor-pointer hover:text-white transition' />
 				</div>
 
+				{
+					isTimerInputOpened &&
+					<div className='absolute bottom-20 right-20 px-4 pb-4 m-2 bg-neutral-600 rounded-t'>
+						<p className='my-4'>Введите <span className='font-semibold'>число минут</span><br />проигрывания музыки</p>
+						<div className='flex gap-x-4'>
+							<Input className='w-[80px]' placeholder={'15'} value={timer != 0 ? timer : ''}
+										 onChange={(e) => setTimer(+e.target.value)} />
+							<Button disabled={!Number.isFinite(timer)} onClick={onTimerOKButtonClick} className='bg-white w-[80px]'>
+								OK
+							</Button>
+						</div>
+					</div>
+				}
+
 				<div className='hidden md:flex w-full justify-end pr-2'>
-					{/*w-[45%]*/}
 					<div className='flex items-center gap-x-2'>
 						<p className='min-w-[46px]'>{padStartWithZero(currTime.min)}:{padStartWithZero(currTime.sec)}</p>
 						<RepeatIcon onClick={onRepeatSong} className='cursor-pointer' size={44} />
+						<PiTimerBold onClick={onTimerButtonClick} className='cursor-pointer' size={44} />
 						<VolumeIcon onClick={toggleMute} className='cursor-pointer' size={44} />
 						<Slider step={0.01} min={0} max={1} defaultVal={1} value={volumeState}
 							onChange={(value) => setVolume(value)} />
