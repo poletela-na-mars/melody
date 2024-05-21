@@ -81,38 +81,39 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 				</div>
 
 				<div className='flex items-center gap-x-4 flex-wrap justify-end gap-y-2'>
-					{user
-						? <div className='flex gap-x-4 items-center'>
-							<Button onClick={handleLogout} className='bg-white p-2'>
-								<FiLogOut size={24} className='log-out' />
-								<Tooltip anchorSelect='.log-out' place='bottom'>
+					{
+						user
+							? <div className='flex gap-x-4 items-center'>
+								<Button onClick={handleLogout} className='bg-white p-2'>
+									<FiLogOut size={24} className='log-out' />
+									<Tooltip anchorSelect='.log-out' place='bottom'>
 									Выйти из аккаунта
-								</Tooltip>
-							</Button>
-							<Button onClick={() => router.push('/account')} className='bg-white'>
-								<FaUserAlt className='profile' />
-								<Tooltip anchorSelect='.profile' place='bottom'>
+									</Tooltip>
+								</Button>
+								<Button onClick={() => router.push('/account')} className='bg-white'>
+									<FaUserAlt className='profile' />
+									<Tooltip anchorSelect='.profile' place='bottom'>
 									Аккаунт
-								</Tooltip>
-							</Button>
-						</div>
-						:
-						<>
-							<div>
-								<Button
-									onClick={authModal.onOpen}
-									className='bg-transparent border-solid border-white text-white px-6 py-2 font-medium'>
+									</Tooltip>
+								</Button>
+							</div>
+							:
+							<>
+								<div>
+									<Button
+										onClick={authModal.onOpen}
+										className='bg-transparent border-solid border-white text-white px-6 py-2 font-medium'>
 									Зарегистрироваться
-								</Button>
-							</div>
-							<div>
-								<Button
-									onClick={authModal.onOpen}
-									className='bg-white px-6 py-2'>
+									</Button>
+								</div>
+								<div>
+									<Button
+										onClick={authModal.onOpen}
+										className='bg-white px-6 py-2'>
 									Войти
-								</Button>
-							</div>
-						</>
+									</Button>
+								</div>
+							</>
 					}
 				</div>
 
