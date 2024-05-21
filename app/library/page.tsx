@@ -22,17 +22,17 @@ const Library = async ({ searchParams }: LibraryProps) => {
 
 	return (
 		<div className='bg-neutral-900 rounded-lg h-full w-full overflow-hidden overflow-y-auto'>
-			<Header className='from-bg-neutral-900'>
+			<Header className='from-bg-neutral-900' data-testid='header'>
 				<h1 className='text-white text-3xl font-semibold py-4'>
 					Ваша Библиотека
 				</h1>
 				<div className='mb-2 flex flex-col gap-y-6'>
 					<h2 className='text-white text-3xl font-semibold'>
-						<SearchInput placeholder='Введите название песни или альбома...' />
+						<SearchInput placeholder='Введите название песни или альбома...' data-testid='input' />
 					</h2>
 				</div>
 			</Header>
-			<LibraryContent songs={songs} albums={albums} />
+			<LibraryContent songs={songs} albums={albums} data-testid='library-content' />
 		</div>
 	);
 };
