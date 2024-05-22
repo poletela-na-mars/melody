@@ -52,14 +52,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 			<div className='w-full mb-4 flex items-center justify-between'>
 				<div className='hidden md:flex gap-x-2 items-center'>
 					<button onClick={() => router.back()} 
-						className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'>
+						className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'
+						aria-label='Go Back'>
 						<RxCaretLeft className='caret-left text-white' size={35} />
 						<Tooltip anchorSelect='.caret-left' place='bottom'>
 							Нажмите, чтобы вернуться
 						</Tooltip>
 					</button>
 					<button onClick={() => router.forward()} 
-						className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'>
+						className='rounded-full bg-black flex items-center justify-center hover:opacity-75 transition'
+						aria-label='Go Forward'>
 						<RxCaretRight className='caret-right text-white' size={35} />
 						<Tooltip anchorSelect='.caret-right' place='bottom'>
 							Нажмите, чтобы перейти вперед
