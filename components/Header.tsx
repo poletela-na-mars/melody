@@ -19,6 +19,7 @@ import { HiHome } from 'react-icons/hi';
 import { BiSearch } from 'react-icons/bi';
 import { FaUserAlt } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
+import { IoStatsChart } from 'react-icons/io5';
 
 interface HeaderProps {
 	children: React.ReactNode;
@@ -78,6 +79,11 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 					<button className='rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition'>
 						<Link href='/search'>
 							<BiSearch className='text-black' size={24} />
+						</Link>
+					</button>
+					<button className='rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition'>
+						<Link href='/stat'>
+							<IoStatsChart className='text-black' size={24} />
 						</Link>
 					</button>
 				</div>
